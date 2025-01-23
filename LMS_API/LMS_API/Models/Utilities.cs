@@ -48,8 +48,8 @@ namespace LMS_API.Models
 
         public void SendEmail(string Addressee, string Subject, string Message)
         {
-            string mail_smtp = _configuration.GetSection("Llaves:correoSMTP").Value;
-            string key_smtp = _configuration.GetSection("Llaves:claveSMTP").Value;
+            string mail_smtp = _configuration.GetSection("Keys:mail_smtp").Value;
+            string key_smtp = _configuration.GetSection("Keys:key_smtp").Value;
 
             MailMessage msg = new MailMessage();
             msg.To.Add(new MailAddress(Addressee));

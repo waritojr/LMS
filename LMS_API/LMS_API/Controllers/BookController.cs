@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Identity;
 
 namespace LMS_API.Controllers
 {
@@ -145,6 +147,52 @@ namespace LMS_API.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        // Method to View a SelectListItem of Classification Types
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetClassificationType")]
+        public IActionResult GetClassificationType()
+        {
+            try
+            {
+                using (var context =  new SqlConnection(_connection))
+                {
+                    var data = context.Query<SelectListItem>("GetClassificationType",
+                        new { },
+                        commandType: CommandType.StoredProcedure).ToList();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        // Method to Get a SelectListItem of Languages
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetLanguage")]
+        public IActionResult GetLanguage()
+        {
+            try
+            {
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Query<SelectListItem>("GetLanguage",
+                        new { },
+                        commandType: CommandType.StoredProcedure).ToList();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

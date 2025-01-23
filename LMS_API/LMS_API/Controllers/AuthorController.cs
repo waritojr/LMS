@@ -1,5 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Dapper;
+using System.Data;
+using System.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization;
+using LMS_API.Entities;
+using System.Runtime.InteropServices;
 
 namespace LMS_API.Controllers
 {
@@ -7,5 +14,108 @@ namespace LMS_API.Controllers
     [ApiController]
     public class AuthorController : ControllerBase
     {
+
+        private readonly IConfiguration _configuration;
+        private string _connection;
+
+        public AuthorController(IConfiguration configuration, string connection)
+        {
+            _configuration = configuration;
+            _connection = _configuration.GetConnectionString("DefaultConnection");
+        }
+
+        // Method to Get All Authors
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetAllAuthors")]
+        public IActionResult GetAllAuthors(AuthorEnt entity)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Query<AuthorEnt>("GetAllAuthors",
+                        new { },
+                        commandType: CommandType.StoredProcedure).ToList();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Method to Create an Author
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("AddAuthor")]
+        public IActionResult AddAuthor(AuthorEnt entity)
+        {
+            try
+            {
+                using ( var context = new SqlConnection(_connection))
+                {
+                    var data = context.Query<long>("AddAuthor",
+                        new { entity.name_author, entity.nationality, entity.date_of_birth, entity.biography },
+                        commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Method to Update an Author
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("UpdateAuthor")]
+        public IActionResult UpdateAuthor(AuthorEnt entity)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Execute("UpdateAuthor",
+                        new { entity.name_author, entity.nationality, entity.date_of_birth, entity.biography },
+                        commandType: CommandType.StoredProcedure);
+
+                    return Ok(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Method to Get Authors as a SelectListItem
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetAuthor")]
+        public IActionResult GetAuthor()
+        {
+            try
+            {
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Query<SelectListItem>("GetAuthor",
+                        new {  },
+                        commandType: CommandType.StoredProcedure).ToList();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
