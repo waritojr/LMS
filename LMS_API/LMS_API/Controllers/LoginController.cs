@@ -39,7 +39,16 @@ namespace LMS_API.Controllers
                         new { entity.username, entity.email, entity.password_user },
                         commandType: CommandType.StoredProcedure).FirstOrDefault();
 
-                    return Ok(data);
+                    if (data != null)
+                    {
+                        data.token = _utilities.GenerateToken(data.id_user.ToString(), data.id_role.ToString());
+                        return Ok(data);
+                    }
+                    else
+                    {
+                        return BadRequest("No se logró validar su información.");
+                    }
+
                 }
             }
             catch (Exception ex)

@@ -36,7 +36,7 @@ namespace LMS_API.Controllers
             try
             {
 
-                long id_user = q;
+                long id_user = (q != 0 ? q : _utilities.GetUserAuth(User.Claims));
 
                 using (var context = new SqlConnection(_connection))
                 {
@@ -61,10 +61,12 @@ namespace LMS_API.Controllers
         {
             try
             {
+                long id_user = (entity.id_user != 0 ? entity.id_user : _utilities.GetUserAuth(User.Claims));
+
                 using (var context = new SqlConnection(_connection))
                 {
                     var data = context.Execute("UpdateProfile",
-                        new { entity.username, entity.full_name, entity.email, entity.identification, entity.tel },
+                        new { entity.username, entity.full_name, entity.email, entity.identification, entity.tel, id_user },
                         commandType: CommandType.StoredProcedure);
 
                     return Ok(data);
@@ -85,12 +87,12 @@ namespace LMS_API.Controllers
             try
             {
 
-                
+                long id_user = _utilities.GetUserAuth(User.Claims);
 
                 using (var context = new SqlConnection(_connection))
                 {
                     var data = context.Execute("ChangePassword",
-                        new { entity.password_prev, entity.password_user },
+                        new { id_user, entity.password_prev, entity.password_user },
                         commandType: CommandType.StoredProcedure);
 
                     return Ok(data);

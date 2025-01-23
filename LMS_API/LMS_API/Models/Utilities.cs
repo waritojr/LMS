@@ -138,5 +138,22 @@ namespace LMS_API.Models
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public long GetUserAuth(IEnumerable<Claim> values)
+        {
+            var claims = values.Select(Claim => new { Claim.Type, Claim.Value }).ToArray();
+            return long.Parse(Decrypt(claims.Where(x => x.Type == "username").ToList().FirstOrDefault().Value));
+        }
+
+        public bool IsAdmin(IEnumerable<Claim> values)
+        {
+            var claims = values.Select(Claim => new { Claim.Type, Claim.Value }).ToArray();
+            var user_role = Decrypt(claims.Where(x => x.Type == "user_role").ToList().FirstOrDefault().Value);
+
+            if (user_role == "1")
+                return true;
+
+            return false;
+        }
+
     }
 }

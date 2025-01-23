@@ -1,4 +1,5 @@
 ﻿using LMS_API.Entities;
+using System.Security.Claims;
 
 namespace LMS_API.Interfaces
 {
@@ -15,5 +16,9 @@ namespace LMS_API.Interfaces
         public string Decrypt(string texto);
 
         public string GenerateToken(string id_user, string id_rol);
+
+        public long GetUserAuth(IEnumerable<Claim> values);
+
+        public bool IsAdmin(IEnumerable<Claim> values);
     }
 }
