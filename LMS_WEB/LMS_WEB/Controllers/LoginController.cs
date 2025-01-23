@@ -1,4 +1,5 @@
-﻿using LMS_WEB.Interfaces;
+﻿using LMS_WEB.Entities;
+using LMS_WEB.Interfaces;
 using LMS_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -24,7 +25,14 @@ namespace LMS_WEB.Controllers
 
         // View to Admin Login
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult LogIn()
+        {
+            return View();
+        }
+
+        // Action for LogIn
+        [HttpPost]
+        public IActionResult LogIn(UserEnt entity)
         {
             return View();
         }
@@ -45,7 +53,7 @@ namespace LMS_WEB.Controllers
 
         // Action to Logout Admin account, exit system
         [HttpGet]
-        public IActionResult Logout()
+        public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");

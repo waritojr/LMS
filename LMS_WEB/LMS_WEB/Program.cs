@@ -13,6 +13,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton<IUserModel, UserModel>();
 builder.Services.AddSingleton<IBookModel, BookModel>();
+builder.Services.AddSingleton<IAuthorModel, AuthorModel>();
 builder.Services.AddSingleton<IReservationModel, ReservationModel>();
 
 var app = builder.Build();

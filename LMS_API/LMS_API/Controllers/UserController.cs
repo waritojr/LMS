@@ -1,5 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dapper;
+using LMS_API.Entities;
+using LMS_API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.SqlClient;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
+using LMS_API.Models;
 
 namespace LMS_API.Controllers
 {
@@ -7,5 +15,94 @@ namespace LMS_API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+
+        private readonly IConfiguration _configuration;
+        private readonly IUtilities _utilities;
+        private string _connection;
+
+        public UserController(IConfiguration configuration, IUtilities utilities, string connection)
+        {
+            _configuration = configuration;
+            _utilities = utilities;
+            _connection = _configuration.GetConnectionString("DefaultConnection");
+        }
+
+        // Method to Get a User by their ID
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetUser")]
+        public IActionResult GetUser(long q)
+        {
+            try
+            {
+
+                long id_user = q;
+
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Query<UserEnt>("GetUser",
+                        new { id_user },
+                        commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex) 
+            { 
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // Method to Update Profile 
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("UpdateProfile")]
+        public IActionResult UpdateProfile(UserEnt entity)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Execute("UpdateProfile",
+                        new { entity.username, entity.full_name, entity.email, entity.identification, entity.tel },
+                        commandType: CommandType.StoredProcedure);
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //Method to Update Password inside system
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("ChangePassword")]
+        public IActionResult ChangePassword(UserEnt entity)
+        {
+            try
+            {
+
+                
+
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Execute("ChangePassword",
+                        new { entity.password_prev, entity.password_user },
+                        commandType: CommandType.StoredProcedure);
+
+                    return Ok(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
