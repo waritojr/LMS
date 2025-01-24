@@ -49,7 +49,7 @@ namespace LMS_API.Controllers
 
         // Method to Create an Author
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize]
         [Route("AddAuthor")]
         public IActionResult AddAuthor(AuthorEnt entity)
         {
@@ -72,7 +72,7 @@ namespace LMS_API.Controllers
 
         // Method to Update an Author
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize]
         [Route("UpdateAuthor")]
         public IActionResult UpdateAuthor(AuthorEnt entity)
         {
@@ -96,15 +96,15 @@ namespace LMS_API.Controllers
 
         // Method to Get Authors as a SelectListItem
         [HttpGet]
-        [AllowAnonymous]
-        [Route("GetAuthor")]
-        public IActionResult GetAuthor()
+        [Authorize]
+        [Route("ListAuthors")]
+        public IActionResult ListAuthors()
         {
             try
             {
                 using (var context = new SqlConnection(_connection))
                 {
-                    var data = context.Query<SelectListItem>("GetAuthor",
+                    var data = context.Query<SelectListItem>("ListAuthors",
                         new {  },
                         commandType: CommandType.StoredProcedure).ToList();
 

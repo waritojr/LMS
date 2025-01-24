@@ -34,7 +34,24 @@ namespace LMS_WEB.Controllers
         [HttpPost]
         public IActionResult LogIn(UserEnt entity)
         {
-            return View();
+            if (!ModelState.IsValid)
+                return View();
+
+            var resp = _userModel.LogIn(entity);
+
+            if (resp != null)
+            {
+                HttpContext.Session.SetString("NombreUsuario", resp.full_name);
+                HttpContext.Session.SetString("TokenUsuario", resp.token);
+                HttpContext.Session.SetString("RolUsuario", resp.id_role.ToString());
+
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.MensajePantalla = "No se pudo validar su cuenta";
+                return View();
+            }
         }
 
         // View to Admin Recov Pass
@@ -56,7 +73,7 @@ namespace LMS_WEB.Controllers
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Login");
+            return RedirectToAction("LogIn", "Login");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -51,7 +51,7 @@ namespace LMS_API.Controllers
 
         // Method to Add Books
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize]
         [Route("AddBook")]
         public IActionResult AddBook(BookEnt entity)
         {
@@ -60,7 +60,7 @@ namespace LMS_API.Controllers
                 using (var context = new SqlConnection(_connection))
                 {
 
-                    var data = context.Query<long>("getAllBooks",
+                    var data = context.Query<long>("AddBook",
                         new
                         {
                             entity.classification_name,
@@ -89,7 +89,7 @@ namespace LMS_API.Controllers
 
         // Method to Update a Book
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize]
         [Route("UpdateBook")]
         public IActionResult UpdateBook(BookEnt entity)
         {
@@ -126,7 +126,7 @@ namespace LMS_API.Controllers
 
         // Method to change the Status of a Book
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize]
         [Route("UpdateStatusBook")]
         public IActionResult UpdateStatusBook(BookEnt entity)
         {
@@ -151,7 +151,7 @@ namespace LMS_API.Controllers
 
         // Method to View a SelectListItem of Classification Types
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route("GetClassificationType")]
         public IActionResult GetClassificationType()
         {
@@ -174,7 +174,7 @@ namespace LMS_API.Controllers
 
         // Method to Get a SelectListItem of Languages
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route("GetLanguage")]
         public IActionResult GetLanguage()
         {

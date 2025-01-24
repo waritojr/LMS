@@ -29,7 +29,7 @@ namespace LMS_API.Controllers
 
         // Method to Get a User by their ID
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route("GetUser")]
         public IActionResult GetUser(long q)
         {
@@ -55,7 +55,7 @@ namespace LMS_API.Controllers
 
         // Method to Update Profile 
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize]
         [Route("UpdateProfile")]
         public IActionResult UpdateProfile(UserEnt entity)
         {
@@ -80,7 +80,7 @@ namespace LMS_API.Controllers
 
         //Method to Update Password inside system
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize]
         [Route("ChangePassword")]
         public IActionResult ChangePassword(UserEnt entity)
         {
