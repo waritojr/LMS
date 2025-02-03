@@ -1,0 +1,46 @@
+﻿@model LMS_WEB.Entities.AuthorEnt
+
+
+@{
+    ViewData["Title"] = "UpdateAuthor";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Información del Autor</h4>
+
+            @using (Html.BeginForm("AddAuthor", "Author", FormMethod.Post, new { @class = "pt-3", @enctype = "multipart/form-data" }))
+            {
+                @*@ViewBag.MensajePantalla*@
+
+                @Html.HiddenFor(m => m.id_author)
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    @Html.TextBoxFor(m => m.name_author, new { @class="form-control form-control-lg", @type="text", @placeholder="Nombre de Autor" })
+                </div>
+                <div class="form-group">
+                    <label>Nacionalidad</label>
+                    @Html.TextBoxFor(m => m.nationality, new { @class="form-control form-control-lg", @type="text", @placeholder="Nacionalidad" })
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Nacimiento</label>
+                    @Html.TextBoxFor(m => m.date_of_birth, new { @class="form-control form-control-lg", @type="datetime", @placeholder="Nacimiento" })
+                </div>
+                <div class="form-group">
+                    <label>Biografía</label>
+                    @Html.TextBoxFor(m => m.biography, new { @class="form-control form-control-lg", @type="text", @placeholder="Biografía" })
+                </div>
+
+                @*<div class="form-group">
+            <label>Imagen</label>
+            <input type="file" id="ImgProducto" accept="image/png" name="ImgProducto" class="form-control form-control-lg">
+            </div>*@
+
+                <button type="submit" class="btn btn-primary mr-2">Añadir Autor</button>
+            }
+        </div>
+    </div>
+</div>

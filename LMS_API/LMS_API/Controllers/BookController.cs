@@ -18,7 +18,7 @@ namespace LMS_API.Controllers
         private readonly IConfiguration _configuration;
         private string _connection;
 
-        public BookController(IConfiguration configuration, string connection)
+        public BookController(IConfiguration configuration)
         {
             _configuration = configuration;
             _connection = _configuration.GetConnectionString("DefaultConnection");
@@ -28,7 +28,7 @@ namespace LMS_API.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("GetAllBooks")]
-        public IActionResult GetAllBooks(BookEnt entity)
+        public IActionResult GetAllBooks()
         {
             try
             {
@@ -68,6 +68,7 @@ namespace LMS_API.Controllers
                             entity.subject_book,
                             entity.publication_date,
                             entity.publisher,
+                            entity.description_book,
                             entity.isbn,
                             entity.availability_book,
                             entity.quantity,
@@ -105,6 +106,7 @@ namespace LMS_API.Controllers
                             entity.subject_book,
                             entity.publication_date,
                             entity.publisher,
+                            entity.description_book,
                             entity.isbn,
                             entity.availability_book,
                             entity.quantity,

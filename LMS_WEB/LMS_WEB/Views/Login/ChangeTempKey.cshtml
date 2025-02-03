@@ -1,0 +1,36 @@
+﻿@model LMS_WEB.Entities.UserEnt
+
+@{
+    ViewData["Title"] = "ChangeTempKey";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<div class="content-wrapper d-flex align-items-center auth px-0">
+    <div class="row w-100 mx-0">
+        <div class="col-lg-4 mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                <div class="brand-logo">
+                    <img src="~/template/images/logo.svg" alt="logo">
+                </div>
+
+                @using (Html.BeginForm("ChangeTempKey", "Login", FormMethod.Post, new { @class = "pt-3" }))
+                {
+                    @ViewBag.MensajePantalla
+
+                    @Html.HiddenFor(m => m.id_user_auth)
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.password_temp, new { @class="form-control form-control-lg", @type="password", @placeholder="Contraseña Temporal" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.password_user, new { @class="form-control form-control-lg", @type="password", @placeholder="Contraseña Nueva"})
+                    </div>
+                    <div class="mt-3">
+                        <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="Cambiar Contraseña">
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

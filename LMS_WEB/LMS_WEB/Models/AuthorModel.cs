@@ -33,7 +33,7 @@ namespace LMS_WEB.Models
                 return null;
         }
 
-        public int AddAuthor(BookEnt entity)
+        public int AddAuthor(AuthorEnt entity)
         {
             string url = _urlAPI + "api/Author/AddAuthor";
             string token = _HttpContextAccessor.HttpContext.Session.GetString("user_token");
@@ -48,7 +48,7 @@ namespace LMS_WEB.Models
                 return 0;
         }
 
-        public int UpdateAuthor(BookEnt entity)
+        public int UpdateAuthor(AuthorEnt entity)
         {
             string url = _urlAPI + "api/Author/UpdateAuthor";
             string token = _HttpContextAccessor.HttpContext.Session.GetString("user_token");

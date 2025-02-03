@@ -68,6 +68,40 @@ namespace LMS_API.Models
             client.Send(msg);
         }
 
+        public string GenerateToken(string id_user, string id_role)
+        {
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim("username", Encrypt(id_user)));
+            claims.Add(new Claim("userrole", Encrypt(id_role)));
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Ty1UELmVFKQmMD4af0a4jvfZS30cXu3U"));
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(10),
+                signingCredentials: cred);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public long GetUserAuth(IEnumerable<Claim> values)
+        {
+            var claims = values.Select(Claim => new { Claim.Type, Claim.Value }).ToArray();
+            return long.Parse(Decrypt(claims.Where(x => x.Type == "username").ToList().FirstOrDefault().Value));
+        }
+
+        public bool IsAdmin(IEnumerable<Claim> values)
+        {
+            var claims = values.Select(Claim => new { Claim.Type, Claim.Value }).ToArray();
+            var userrole = Decrypt(claims.Where(x => x.Type == "userrole").ToList().FirstOrDefault().Value);
+
+            if (userrole == "1")
+                return true;
+
+            return false;
+        }
+
         public string Encrypt(string texto)
         {
             byte[] iv = new byte[16];
@@ -119,40 +153,6 @@ namespace LMS_API.Models
                     }
                 }
             }
-        }
-
-        public string GenerateToken(string id_user, string id_rol)
-        {
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim("username", Encrypt(id_user)));
-            claims.Add(new Claim("userrol", Encrypt(id_rol)));
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Ty1UELmVFKQmMD4af0a4jvfZS30cXu3U"));
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(10),
-                signingCredentials: cred);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public long GetUserAuth(IEnumerable<Claim> values)
-        {
-            var claims = values.Select(Claim => new { Claim.Type, Claim.Value }).ToArray();
-            return long.Parse(Decrypt(claims.Where(x => x.Type == "username").ToList().FirstOrDefault().Value));
-        }
-
-        public bool IsAdmin(IEnumerable<Claim> values)
-        {
-            var claims = values.Select(Claim => new { Claim.Type, Claim.Value }).ToArray();
-            var user_role = Decrypt(claims.Where(x => x.Type == "user_role").ToList().FirstOrDefault().Value);
-
-            if (user_role == "1")
-                return true;
-
-            return false;
         }
 
     }

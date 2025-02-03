@@ -7,9 +7,9 @@ namespace LMS_WEB.Interfaces
     {
         public List<AuthorEnt>? GetAllAuthors();
 
-        public int AddAuthor(BookEnt entity);
+        public int AddAuthor(AuthorEnt entity);
 
-        public int UpdateAuthor(BookEnt entity);
+        public int UpdateAuthor(AuthorEnt entity);
 
         public List<SelectListItem>? ListAuthors();
     }

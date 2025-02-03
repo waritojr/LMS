@@ -18,7 +18,7 @@ namespace LMS_API.Controllers
         private readonly IConfiguration _configuration;
         private string _connection;
 
-        public AuthorController(IConfiguration configuration, string connection)
+        public AuthorController(IConfiguration configuration)
         {
             _configuration = configuration;
             _connection = _configuration.GetConnectionString("DefaultConnection");
@@ -28,7 +28,7 @@ namespace LMS_API.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("GetAllAuthors")]
-        public IActionResult GetAllAuthors(AuthorEnt entity)
+        public IActionResult GetAllAuthors()
         {
             try
             {

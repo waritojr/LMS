@@ -1,7 +1,11 @@
-﻿@{
+﻿@model List<LMS_WEB.Entities.BookEnt>
+@using LMS_WEB.Helpers
+
+@{
     ViewData["Title"] = "ViewBooks";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
 
 
 <div class="col-12 grid-margin stretch-card">
@@ -9,75 +13,93 @@
         <div class="card-body">
             <h4 class="card-title">Información de Libros</h4>
 
-            <div style="text-align:right">
+            <div style="text-align:left">
                 <a class="btn btn-primary" href="@Url.Action("AddBook","Book")">Agregar</a>
             </div>
             <br>
 
-            <table id="showData" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Idioma</th>
-                        <th>Clasificación</th>
-                        <th>Autor</th>
-                        <th>Materia</th>
-                        <th>Datos de Publicación</th>
-                        <th>Descripción Física</th>
-                        <th>ISBM</th>
-                        <th>Ejemplares</th>
-                        <th>Disponibilidad</th>
-                        <th>Estado</th>
-                        <th>Imagen</th>
-                        <th>Cambiar Estado</th>
-                        <th>Actualizar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @*@foreach (var item in Model)
-                    {@**@
-                    <tr>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-                        <td>Test</td>
-
-                        @*
-                        @if (@item.Estado)
+            <div class="table-container">
+                <table id="showData" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Clasificación</th>
+                            <th>Tipo Clasificación</th>
+                            <th>Tema</th>
+                            <th>Lenguaje</th>
+                            <th>Descripción Física</th>
+                            <th>ISBN</th>
+                            <th>Autor</th>
+                            <th>Publicador</th>
+                            <th>Fecha de Publicación</th>
+                            <th>Ejemplares</th>
+                            <th>Disponibilidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
                         {
-                        <td>Activo</td>
-                        }
-                        else
-                        {
-                        <td>Inactivo</td>
-                        }
-                        <td style="text-align:center"><img src=@item.Imagen style="width:150px; height:150px; border-radius:0px"></td>*@
+                            <tr>
+                                <td>@item.title</td>
+                                <td>@item.classification_name</td>
+                                <td>@item.id_classification</td>
+                                <td>@item.subject_book</td>
+                                <td>@item.id_language</td>
+                                <td>@item.description_book</td>
+                                <td>@item.isbn</td>
+                                <td>@item.id_author</td>
+                                <td>@item.publisher</td>
+                                <td>@item.publication_date</td>
+                                <td>@item.quantity</td>
+                                <td>@item.availability_book</td>
+                                <td>@(item.status_book ? "Activo" : "Inactivo")</td>
+                                <td>@UpdateBtn.RenderActionButtonsBook(item)</td>
 
-                        <td style="text-align:center"><a href="@Url.Action("ActualizarEstadoProducto","Book")"><i class="fa fa-exchange fa-lg"></i></a></td>
-                        <td style="text-align:center"><a href="@Url.Action("UpdateBook","Book")"><i class="fa fa-tag fa-lg"></i></a></td>
-                    </tr>
-                    @*}@**@
-                </tbody>
-            </table>
+
+                                @*@if (item.status_book == true)
+                                {
+                                    <td>
+                                        <div>
+                                            <a href="@Url.Action("UpdateBook", "Book", new { q = item.id_book })" class="btn btn-info btn-actions" data-toggle="tooltip" data-placement="top" title="Actualizar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+                                                </svg>
+                                            </a>
+                                            <a href="@Url.Action("UpdateStatusBook","Book", new { q = item.id_book })" class="btn btn-danger btn-actions" data-product-id="@item.id_book" data-toggle="tooltip" data-placement="top" title="Desactivar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <div>
+
+                                            <a href="@Url.Action("UpdateStatusBook","Book", new { q = item.id_book })" class="btn btn-success activate-product" data-product-id="@item.id_book" data-toggle="tooltip" data-placement="top" title="Activar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+                                                    <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </td>
+
+                                }*@
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     </div>
 </div>
 
+<script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#showData').dataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
-            }
-        });
-    });
-</script>
+<script src="~/js/ScriptFunctions.js"></script>

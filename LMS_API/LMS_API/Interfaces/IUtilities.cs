@@ -15,7 +15,7 @@ namespace LMS_API.Interfaces
 
         public string Decrypt(string texto);
 
-        public string GenerateToken(string id_user, string id_rol);
+        public string GenerateToken(string id_user, string id_role);
 
         public long GetUserAuth(IEnumerable<Claim> values);
 

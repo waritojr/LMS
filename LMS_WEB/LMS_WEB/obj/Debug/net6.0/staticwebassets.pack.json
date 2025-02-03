@@ -5,12 +5,20 @@
       "PackagePath": "staticwebassets\\LMS_WEB.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\DataTable.css",
+      "PackagePath": "staticwebassets\\css\\DataTable.css"
+    },
+    {
       "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\js\\ScriptFunctions.js",
+      "PackagePath": "staticwebassets\\js\\ScriptFunctions.js"
     },
     {
       "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\js\\site.js",

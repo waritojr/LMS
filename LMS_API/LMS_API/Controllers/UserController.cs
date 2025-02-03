@@ -20,7 +20,7 @@ namespace LMS_API.Controllers
         private readonly IUtilities _utilities;
         private string _connection;
 
-        public UserController(IConfiguration configuration, IUtilities utilities, string connection)
+        public UserController(IConfiguration configuration, IUtilities utilities)
         {
             _configuration = configuration;
             _utilities = utilities;
@@ -66,7 +66,7 @@ namespace LMS_API.Controllers
                 using (var context = new SqlConnection(_connection))
                 {
                     var data = context.Execute("UpdateProfile",
-                        new { entity.username, entity.full_name, entity.email, entity.identification, entity.tel, id_user },
+                        new { id_user, entity.username, entity.full_name, entity.email, entity.identification, entity.tel },
                         commandType: CommandType.StoredProcedure);
 
                     return Ok(data);

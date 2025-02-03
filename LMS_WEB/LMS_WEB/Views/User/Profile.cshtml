@@ -1,0 +1,45 @@
+﻿@model LMS_WEB.Entities.UserEnt
+
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Información General</h4>
+
+            @using (Html.BeginForm("Profile", "User", FormMethod.Post, new { @class = "pt-3" }))
+            {
+                @*@ViewBag.MensajePantalla*@
+
+                <div class="form-group">
+                    <label>Identificación</label>
+                    @Html.TextBoxFor(m => m.identification, new { @onkeyup="ConsultNameAPI()", @class="form-control form-control-lg", @type="text", @placeholder="Identificación" })
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    @Html.TextBoxFor(m => m.full_name, new {  @readOnly="readOnly", @class="form-control form-control-lg", @type="text", @placeholder="Nombre Completo" })
+                </div>
+                <div class="form-group">
+                    <label>Usuario</label>
+                    @Html.TextBoxFor(m => m.username, new { @class="form-control form-control-lg", @type="text", @placeholder="Nombre de Usuario" })
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    @Html.TextBoxFor(m => m.email, new { @class="form-control form-control-lg", @type="email", @placeholder="Correo Electrónico" })
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    @Html.TextBoxFor(m => m.tel, new { @class="form-control form-control-lg", @type="tel", @placeholder="Número Telefónico" })
+                </div>
+
+                <button type="submit" class="btn btn-primary mr-2">Procesar</button>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/js/ScriptFunctions.js"></script>

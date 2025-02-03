@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Sv6c2RuK/9DcD9pF/ZRP+g6DHblkrU5mKEetY4B4S5I=",
+  "Hash": "R6PVJJVgaFh+c4MJNjcXyZnJrf8MOdByuDlofJ///Ec=",
   "Source": "LMS_WEB",
   "BasePath": "_content/LMS_WEB",
   "Mode": "Default",
@@ -51,6 +51,23 @@
       "OriginalItemSpec": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\LMS_WEB.bundle.scp.css"
     },
     {
+      "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\DataTable.css",
+      "SourceId": "LMS_WEB",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\",
+      "BasePath": "_content/LMS_WEB",
+      "RelativePath": "css/DataTable.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\DataTable.css"
+    },
+    {
       "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\site.css",
       "SourceId": "LMS_WEB",
       "SourceType": "Discovered",
@@ -83,6 +100,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\js\\ScriptFunctions.js",
+      "SourceId": "LMS_WEB",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\",
+      "BasePath": "_content/LMS_WEB",
+      "RelativePath": "js/ScriptFunctions.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\ScriptFunctions.js"
     },
     {
       "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\js\\site.js",

@@ -36,7 +36,7 @@ namespace LMS_API.Controllers
                 using (var context = new SqlConnection(_connection))
                 {
                     var data = context.Query<UserEnt>("SignIn",
-                        new { entity.username, entity.email, entity.password_user },
+                        new { entity.username, entity.password_user },
                         commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     if (data != null)

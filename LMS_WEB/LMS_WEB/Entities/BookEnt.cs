@@ -13,6 +13,7 @@
         public bool availability_book { get; set; }
         public int quantity { get; set; }
         public bool status_book { get; set; }
+        public string img_book { get; set; } = string.Empty;
 
         // FK
         public long id_author { get; set; }

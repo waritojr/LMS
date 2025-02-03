@@ -10,16 +10,19 @@ namespace LMS_WEB.Controllers
     {
 
         private readonly IUserModel _userModel;
+        private readonly IBookModel _bookModel;
 
-        public LoginController(IUserModel userModel)
+        public LoginController(IUserModel userModel, IBookModel bookModel)
         {
             _userModel = userModel;
+            _bookModel = bookModel;
         }
 
         // View to Admin Dashboard
         [HttpGet]
         public IActionResult Index()
         {
+            //var data = _bookModel.GetAllBooks().Where(m => m.status_book == true).ToList();
             return View();
         }
 
@@ -41,31 +44,17 @@ namespace LMS_WEB.Controllers
 
             if (resp != null)
             {
-                HttpContext.Session.SetString("NombreUsuario", resp.full_name);
-                HttpContext.Session.SetString("TokenUsuario", resp.token);
-                HttpContext.Session.SetString("RolUsuario", resp.id_role.ToString());
+                HttpContext.Session.SetString("user_name", resp.full_name);
+                HttpContext.Session.SetString("user_token", resp.token);
+                HttpContext.Session.SetString("user_role", resp.id_role.ToString());
 
                 return RedirectToAction("Index", "Login");
             }
             else
             {
-                ViewBag.MensajePantalla = "No se pudo validar su cuenta";
+                ViewBag.Message = "No se pudo validar su cuenta";
                 return View();
             }
-        }
-
-        // View to Admin Recov Pass
-        [HttpGet]
-        public IActionResult RecoverPassword()
-        {
-            return View();
-        }
-
-        // View to Admin Change Pass
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
         }
 
         // Action to Logout Admin account, exit system
@@ -75,6 +64,52 @@ namespace LMS_WEB.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("LogIn", "Login");
         }
+
+        // View to Admin Recov Pass
+        [HttpGet]
+        public IActionResult RecoverPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RecoverPassword(UserEnt entity)
+        {
+            var resp = _userModel.RecoverPassword(entity);
+
+            if (resp == 1)
+                return RedirectToAction("LogIn", "Login");
+            else
+            {
+                ViewBag.Message = "No se pudo validar su cuenta";
+                return View();
+            }
+
+        }
+
+        // View to Admin Change Pass
+        [HttpGet]
+        public IActionResult ChangeTempKey(string q)
+        {
+            UserEnt entity = new UserEnt();
+            entity.id_user_auth = q;
+            return View(entity);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeTempKey(UserEnt entity)
+        {
+            var resp = _userModel.ChangeTempKey(entity);
+
+            if (resp == 1)
+                return RedirectToAction("LogIn", "login");
+            else
+            {
+                return View();
+            }
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

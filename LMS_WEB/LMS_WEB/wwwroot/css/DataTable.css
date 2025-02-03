@@ -1,0 +1,9 @@
+﻿.table-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+.btn-actions {
+    min-width: 80px; /* Ancho mínimo para los botones */
+    margin: 2px; /* Espaciado entre botones */
+}

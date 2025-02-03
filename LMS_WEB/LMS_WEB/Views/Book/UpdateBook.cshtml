@@ -1,8 +1,81 @@
-﻿
+﻿@model LMS_WEB.Entities.BookEnt
+
 @{
     ViewData["Title"] = "UpdateBook";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>UpdateBook</h1>
+
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Información del Producto</h4>
+
+            @using (Html.BeginForm("UpdateBook", "Book", FormMethod.Post, new { @class = "pt-3", @enctype = "multipart/form-data" }))
+            {
+                @*@ViewBag.MensajePantalla*@
+
+                @Html.HiddenFor(m => m.id_book)
+
+                <div class="form-group">
+                    <label>Título</label>
+                    @Html.TextBoxFor(m => m.title, new { @class="form-control form-control-lg", @type="text", @placeholder="Título" })
+                </div>
+                <div class="form-group">
+                    <label>Clasificación</label>
+                    @Html.TextBoxFor(m => m.classification_name, new { @class="form-control form-control-lg", @type="text", @placeholder="Clasificación" })
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Clasificación</label>
+                    @Html.DropDownListFor(m => m.id_classification, ViewBag.Classification as List<SelectListItem>, new { @class="form-control form-control-lg" })
+                </div>
+                <div class="form-group">
+                    <label>Tema</label>
+                    @Html.TextBoxFor(m => m.subject_book, new { @class="form-control form-control-lg", @type="text", @placeholder="Tema" })
+                </div>
+                <div class="form-group">
+                    <label>Lenguaje</label>
+                    @Html.DropDownListFor(m => m.id_language, ViewBag.Language as List<SelectListItem>, new { @class="form-control form-control-lg" })
+                </div>
+                <div class="form-group">
+                    <label>Descripción Física</label>
+                    @Html.TextBoxFor(m => m.description_book, new { @class="form-control form-control-lg", @type="text", @placeholder="color, tamaño, ilustraciones" })
+                </div>
+                <div class="form-group">
+                    <label>ISBN</label>
+                    @Html.TextBoxFor(m => m.isbn, new { @class="form-control form-control-lg", @type="text", @placeholder="ISBN" })
+                </div>
+                <div class="form-group">
+                    <label>Autor</label>
+                    @Html.DropDownListFor(m => m.id_author, ViewBag.Author as List<SelectListItem>, new { @class="form-control form-control-lg" })
+                </div>
+                <div class="form-group">
+                    <label>Publicador</label>
+                    @Html.TextBoxFor(m => m.publisher, new { @class="form-control form-control-lg", @type="text", @placeholder="Publicador" })
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Publicación</label>
+                    @Html.TextBoxFor(m => m.publication_date, new { @class="form-control form-control-lg", @type="datetime", @placeholder="Descripcion" })
+                </div>
+                <div class="form-group">
+                    <label>Unidades</label>
+                    @Html.TextBoxFor(m => m.quantity, new { @onkeypress="return FnInt(event)", @maxlength="3", @class="form-control form-control-lg", @type="number", @placeholder="Unidades" })
+                </div>
+                <div class="form-group">
+                    <label>Disponibilidad</label>
+                    @Html.TextBoxFor(m => m.availability_book, new { @class="form-control form-control-lg", @type="text", @placeholder="Disponibilidad" })
+                </div>
+
+                @*<div class="form-group">
+            <label>Imagen</label>
+            <input type="file" id="ImgProducto" accept="image/png" name="ImgProducto" class="form-control form-control-lg">
+            </div>*@
+
+                <button type="submit" class="btn btn-primary mr-2">Añadir Libro</button>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/js/scriptfunctions.js"></script>
 
