@@ -1,0 +1,90 @@
+﻿@model List<LMS_WEB.Entities.BookEnt>
+
+@{
+    ViewData["Title"] = "BookCatalog";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<!-- Sección del Título de la Biblioteca y Barra de Búsqueda -->
+<div class="row m-b-20">
+    <div class="col-md-12 text-center">
+        <h1 class="display-4">Biblioteca Isaac Felipe Azofeifa</h1>
+        <p class="lead">Explora nuestra colección de libros y encuentra lo que necesitas.</p>
+    </div>
+    <div class="col-md-12 mb-4">
+        <!-- Añadido mb-4 para espacio inferior -->
+        <form class="d-flex justify-content-center" id="search_form">
+            <div class="input-group" style="max-width: 800px;">
+                <!-- Limitamos el ancho máximo -->
+                <input type="text"
+                       class="form-control form-control-lg"
+                       id="id_search"
+                       name="search"
+                       placeholder="Buscar libros por título, autor, ISBN..."
+                       style="border-right: 0;">
+
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-lg"
+                            type="submit"
+                            title="Realizar búsqueda"
+                            style="height: 100%; padding: 0.75rem 1.5rem;">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Sección de Listado de Libros -->
+<div class="row">
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-md-12 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Imagen del Libro -->
+                            <div class="col-md-3 text-center">
+                                <img src="@item.img_book" class="img-fluid" alt="@item.title" style="max-height: 200px; object-fit: contain;">
+                            </div>
+                            <!-- Detalles del Libro -->
+                            <div class="col-md-7">
+                                <h4 class="card-title">@item.title</h4>
+                                <ul class="list-unstyled">
+                                    <li><strong>Autor:</strong> @item.id_author</li>
+                                    <li><strong>ISBN:</strong> @item.isbn</li>
+                                    <li><strong>Editorial:</strong> @item.publisher</li>
+                                    <li><strong>Año de Edición:</strong> @item.publication_date</li>
+                                </ul>
+                            </div>
+                            <!-- Acciones -->
+                            <div class="col-md-2 text-right">
+                                <div class="btn-group-vertical">
+                                    <a href="@Url.Action("ViewBook", "Book", new { id = item.id_book })" class="btn btn-outline-primary btn-sm mb-2">
+                                        <i class="fa fa-eye"></i> Ver Detalles
+                                    </a>
+                                    <button class="btn btn-outline-success btn-sm" title="Agregar a mi estantería">
+                                        <i class="fa fa-bookmark"></i> Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-md-12 text-center">
+            <div class="alert alert-info" role="alert">
+                No hay libros disponibles en este momento.
+            </div>
+        </div>
+    }
+</div>
+

@@ -15,6 +15,14 @@
         public bool status_book { get; set; }
         public string img_book { get; set; } = string.Empty;
 
+
+        // Search Variables
+        public string Field { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+        public DateTime publication_date_from { get; set; }
+        public DateTime publication_date_until { get; set; }
+
+
         // FK
         public long id_author { get; set; }
         public long id_language { get; set; }

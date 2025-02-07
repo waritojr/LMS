@@ -159,7 +159,7 @@ namespace LMS_API.Controllers
         {
             try
             {
-                using (var context =  new SqlConnection(_connection))
+                using (var context = new SqlConnection(_connection))
                 {
                     var data = context.Query<SelectListItem>("GetClassificationType",
                         new { },
@@ -186,6 +186,41 @@ namespace LMS_API.Controllers
                 {
                     var data = context.Query<SelectListItem>("GetLanguage",
                         new { },
+                        commandType: CommandType.StoredProcedure).ToList();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("AdvancedSearch")]
+        public IActionResult AdvancedSearch(
+                                            [FromQuery] string? title = null,
+                                            [FromQuery] string? name_author = null,
+                                            [FromQuery] string? isbn = null,
+                                            [FromQuery] string? classification_name = null,
+                                            [FromQuery] string? subject_book = null)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Query<BookEnt>("AdvancedSearch",
+                        new
+                        {
+                            title = title,
+                            name_author = name_author,
+                            isbn = isbn,
+                            classification_name = classification_name,
+                            subject_book = subject_book
+                        },
                         commandType: CommandType.StoredProcedure).ToList();
 
                     return Ok(data);

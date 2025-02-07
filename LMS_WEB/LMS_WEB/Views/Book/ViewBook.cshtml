@@ -1,0 +1,108 @@
+﻿@model LMS_WEB.Entities.BookEnt
+
+@{
+    ViewData["Title"] = "ViewBook";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-md-9 bg-white flex-last flex-md-first">
+    <div class="row border-bottom p-b-15">
+        <div class="col-md-10">
+            <h2 class="no-margin p-t-15">
+                @Model.title
+            </h2>
+        </div>
+        <div class="col-md-2 p-t-30">
+            @if (Model.availability_book)
+            {
+                <span class="badge bg-success text-white">
+                    <i class="fa fa-check"></i> Disponible
+                </span>
+            }
+            else
+            {
+                <span class="badge bg-danger text-white">
+                    <i class="fa fa-times"></i> No Disponible
+                </span>
+            }
+        </div>
+    </div>
+
+    
+
+    <div class="row p-t-10">
+        <div class="col-md-12">
+            </br>
+
+            <div class="row m-t-20">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Autor:</label>
+                        <div class="col-md-8">
+                            @Model.id_author
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">ISBN:</label>
+                        <div class="col-md-8">
+                            @Model.isbn
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Editorial:</label>
+                        <div class="col-md-8">
+                            @Model.publisher
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Año de Publicación:</label>
+                        <div class="col-md-8">
+                            @Model.publication_date
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Materia:</label>
+                        <div class="col-md-8">
+                            @Model.subject_book
+                            @*@string.Join(", ", Model.subject_book)*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Unidades:</label>
+                        <div class="col-md-8">
+                            @Model.quantity
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Idioma:</label>
+                        <div class="col-md-8">
+                            @Model.id_language
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Clasificación:</label>
+                        <div class="col-md-8">
+                            @Model.classification_name
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 font-weight-bold">Tipo de Clasificación:</label>
+                        <div class="col-md-8">
+                            @Model.id_classification
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

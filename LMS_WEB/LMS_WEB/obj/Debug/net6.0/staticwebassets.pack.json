@@ -5,12 +5,12 @@
       "PackagePath": "staticwebassets\\LMS_WEB.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\DataTable.css",
-      "PackagePath": "staticwebassets\\css\\DataTable.css"
-    },
-    {
       "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\styles.css",
+      "PackagePath": "staticwebassets\\css\\styles.css"
     },
     {
       "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\favicon.ico",

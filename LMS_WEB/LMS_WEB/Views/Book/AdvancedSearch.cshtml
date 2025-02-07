@@ -1,0 +1,178 @@
+﻿@model List<LMS_WEB.Entities.BookEnt>
+
+@{
+    ViewData["Title"] = "AdvancedSearch";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Búsqueda Avanzada</h4>
+
+            <!-- Formulario de Búsqueda Avanzada -->
+            @using (Html.BeginForm("AdvancedSearch", "Book", FormMethod.Post, new { @class = "pt-3", @enctype = "multipart/form-data", @id = "advanced-search-form" }))
+            {
+                <div id="filters-container">
+                    <!-- Filtro inicial -->
+                    <div class="filter-row mb-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <select class="form-control field-select" name="filters[0].Field">
+                                    <option value="title">Título</option>
+                                    <option value="name_author">Autor</option>
+                                    <option value="isbn">ISBN</option>
+                                    <option value="classification_name">Clasificación</option>
+                                    <option value="subject_book">Tema</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="filters[0].Value" placeholder="Valor">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger btn-remove-filter" disabled>
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-secondary" id="btn-add-filter">
+                            <i class="fa fa-plus"></i> Agregar Filtro
+                        </button>
+                        <button type="submit" class="btn btn-primary float-right">
+                            <i class="fa fa-search"></i> Buscar
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Resultados de la Búsqueda -->
+@if (Model != null && Model.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-between align-items-center mb-3">
+            <!-- Contenedor para el contador de resultados -->
+            <div class="ml-auto">
+                <span class="badge badge-primary p-2">
+                    Resultados encontrados: @ViewBag.TotalResults
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-12 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Imagen del Libro -->
+                            <div class="col-md-3 text-center">
+                                <img src="@item.img_book" class="img-fluid" alt="@item.title" style="max-height: 200px; object-fit: contain;">
+                            </div>
+                            <!-- Detalles del Libro -->
+                            <div class="col-md-7">
+                                <h4 class="card-title">@item.title</h4>
+                                <ul class="list-unstyled">
+                                    <li><strong>Autor:</strong> @item.id_author</li>
+                                    <li><strong>ISBN:</strong> @item.isbn</li>
+                                    <li><strong>Editorial:</strong> @item.publisher</li>
+                                    <li><strong>Año de Edición:</strong> @item.publication_date</li>
+                                </ul>
+                            </div>
+                            <!-- Acciones -->
+                            <div class="col-md-2 text-right">
+                                <div class="btn-group-vertical">
+                                    <a href="@Url.Action("ViewBook", "Book", new { id = item.id_book })" class="btn btn-outline-primary btn-sm mb-2">
+                                        <i class="fa fa-eye"></i> Ver Detalles
+                                    </a>
+                                    <button class="btn btn-outline-success btn-sm" title="Agregar a mi estantería">
+                                        <i class="fa fa-bookmark"></i> Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else if (ViewBag.HasSearched == true)
+{
+    <div class="col-md-12 text-center">
+        <div class="alert alert-warning" role="alert">
+            No se encontraron resultados para la búsqueda.
+        </div>
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+        $(document).ready(function () {
+            let filterIndex = 1; // Índice para los nuevos filtros
+
+            // Agregar nuevo filtro
+            $('#btn-add-filter').click(function () {
+                const newFilter = `
+                        <div class="filter-row mb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select class="form-control field-select" name="filters[${filterIndex}].Field">
+                                        <option value="title">Título</option>
+                                        <option value="name_author">Autor</option>
+                                        <option value="isbn">ISBN</option>
+                                        <option value="classification_name">Clasificación</option>
+                                        <option value="subject_book">Tema</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="filters[${filterIndex}].Value" placeholder="Valor">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-remove-filter">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                $('#filters-container').append(newFilter);
+                filterIndex++;
+
+                // Habilitar botones de eliminar si hay más de un filtro
+                if ($('.filter-row').length > 1) {
+                    $('.btn-remove-filter').prop('disabled', false);
+                }
+            });
+
+            // Eliminar filtro
+            $(document).on('click', '.btn-remove-filter', function () {
+                if ($('.filter-row').length > 1) {
+                    $(this).closest('.filter-row').remove();
+                }
+
+                // Deshabilitar botones de eliminar si solo hay un filtro
+                if ($('.filter-row').length === 1) {
+                    $('.btn-remove-filter').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .badge-primary {
+            background-color: #007bff; /* Color azul de Bootstrap */
+            font-size: 1rem; /* Tamaño de la fuente */
+            padding: 0.5rem 1rem; /* Espaciado interno */
+            border-radius: 0.25rem; /* Bordes redondeados */
+        }
+    </style>

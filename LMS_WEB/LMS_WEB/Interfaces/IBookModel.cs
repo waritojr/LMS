@@ -16,5 +16,7 @@ namespace LMS_WEB.Interfaces
         public List<SelectListItem>? GetClassificationType();
 
         public List<SelectListItem>? GetLanguage();
+
+        public List<BookEnt>? AdvancedSearch(string? title, string? name_author, string? isbn, string? classification_name, string? subject_book);
     }
 }

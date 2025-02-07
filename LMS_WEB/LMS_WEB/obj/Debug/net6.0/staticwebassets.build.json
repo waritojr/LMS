@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "R6PVJJVgaFh+c4MJNjcXyZnJrf8MOdByuDlofJ///Ec=",
+  "Hash": "wy78ggz/GED0paAnHxA7WeArMtmHjGc1AyttwFAWi3o=",
   "Source": "LMS_WEB",
   "BasePath": "_content/LMS_WEB",
   "Mode": "Default",
@@ -51,23 +51,6 @@
       "OriginalItemSpec": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\LMS_WEB.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\DataTable.css",
-      "SourceId": "LMS_WEB",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\",
-      "BasePath": "_content/LMS_WEB",
-      "RelativePath": "css/DataTable.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\DataTable.css"
-    },
-    {
       "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\site.css",
       "SourceId": "LMS_WEB",
       "SourceType": "Discovered",
@@ -83,6 +66,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\css\\styles.css",
+      "SourceId": "LMS_WEB",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\",
+      "BasePath": "_content/LMS_WEB",
+      "RelativePath": "css/styles.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\styles.css"
     },
     {
       "Identity": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\favicon.ico",
