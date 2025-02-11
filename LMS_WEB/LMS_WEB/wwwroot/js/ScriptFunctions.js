@@ -79,10 +79,17 @@ $(document).ready(function () {
                                         <option value="isbn">ISBN</option>
                                         <option value="classification_name">Clasificación</option>
                                         <option value="subject_book">Tema</option>
+                                        <option value="publisher">Editorial</option>
+                                        <option value="publication_date_from">Fecha de Publicación</option>
+                                        <option value="availability_book">Disponibilidad</option>
+                                        <option value="id_classification">Tipo de Clasificación</option>
+                                        <option value="id_language">Idioma</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="filters[${filterIndex}].Value" placeholder="Valor">
+                                    <div class="value-container">
+                                        <input type="text" class="form-control" name="filters[${filterIndex}].Value" placeholder="Valor">
+                                    </div>
                                 </div>
                                 <div class="col-md-2">
                                     <button type="button" class="btn btn-danger btn-remove-filter">
@@ -114,4 +121,57 @@ $(document).ready(function () {
         }
     });
 
+    // Cambiar el campo de valor según el tipo de filtro seleccionado
+    $(document).on('change', '.field-select', function () {
+        const selectedField = $(this).val();
+        const valueContainer = $(this).closest('.row').find('.value-container');
+
+        if (selectedField === "publication_date_from") {
+            valueContainer.html(`
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control" name="filters[${filterIndex - 1}].Value" placeholder="Desde">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control" name="filters[${filterIndex}].Value" placeholder="Hasta">
+                                </div>
+                            </div>
+                        `);
+        } else if (selectedField === "availability_book") {
+            valueContainer.html(`
+                            <select class="form-control" name="filters[${filterIndex - 1}].Value">
+                                <option value="true">Disponible</option>
+                                <option value="false">No Disponible</option>
+                            </select>
+                        `);
+        } else if (selectedField === "id_classification") {
+            valueContainer.html(`
+                            <select class="form-control" name="filters[${filterIndex - 1}].Value">
+        @if (ViewBag.Classifications != null)
+        {
+            foreach (var item in ViewBag.Classifications)
+            {
+                                                <option value="@item.Value">@item.Text</option>
+            }
+        }
+                            </select>
+                        `);
+        } else if (selectedField === "id_language") {
+            valueContainer.html(`
+                            <select class="form-control" name="filters[${filterIndex - 1}].Value">
+        @if (ViewBag.Languages != null)
+        {
+            foreach (var item in ViewBag.Languages)
+            {
+                                                <option value="@item.Value">@item.Text</option>
+            }
+        }
+                            </select>
+                        `);
+        } else {
+            valueContainer.html(`
+                            <input type="text" class="form-control" name="filters[${filterIndex - 1}].Value" placeholder="Valor">
+                        `);
+        }
+    });
 });

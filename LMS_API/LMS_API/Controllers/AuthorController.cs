@@ -96,7 +96,7 @@ namespace LMS_API.Controllers
 
         // Method to Get Authors as a SelectListItem
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         [Route("ListAuthors")]
         public IActionResult ListAuthors()
         {

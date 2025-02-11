@@ -153,7 +153,7 @@ namespace LMS_API.Controllers
 
         // Method to View a SelectListItem of Classification Types
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         [Route("GetClassificationType")]
         public IActionResult GetClassificationType()
         {
@@ -176,7 +176,7 @@ namespace LMS_API.Controllers
 
         // Method to Get a SelectListItem of Languages
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         [Route("GetLanguage")]
         public IActionResult GetLanguage()
         {
@@ -198,15 +198,54 @@ namespace LMS_API.Controllers
         }
 
 
+        //[HttpGet]
+        //[AllowAnonymous]
+        //[Route("AdvancedSearch")]
+        //public IActionResult AdvancedSearch(
+        //                                    [FromQuery] string? title = null,
+        //                                    [FromQuery] string? name_author = null,
+        //                                    [FromQuery] string? isbn = null,
+        //                                    [FromQuery] string? classification_name = null,
+        //                                    [FromQuery] string? subject_book = null)
+        //{
+        //    try
+        //    {
+        //        using (var context = new SqlConnection(_connection))
+        //        {
+        //            var data = context.Query<BookEnt>("AdvancedSearch",
+        //                new
+        //                {
+        //                    title = title,
+        //                    name_author = name_author,
+        //                    isbn = isbn,
+        //                    classification_name = classification_name,
+        //                    subject_book = subject_book
+        //                },
+        //                commandType: CommandType.StoredProcedure).ToList();
+
+        //            return Ok(data);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
         [HttpGet]
         [AllowAnonymous]
         [Route("AdvancedSearch")]
-        public IActionResult AdvancedSearch(
-                                            [FromQuery] string? title = null,
+        public IActionResult AdvancedSearch([FromQuery] string? title = null,
                                             [FromQuery] string? name_author = null,
                                             [FromQuery] string? isbn = null,
                                             [FromQuery] string? classification_name = null,
-                                            [FromQuery] string? subject_book = null)
+                                            [FromQuery] string? subject_book = null,
+                                            [FromQuery] string? publisher = null,
+                                            [FromQuery] DateTime? publication_date_from = null,
+                                            [FromQuery] DateTime? publication_date_until = null,
+                                            [FromQuery] bool? availability_book = null,
+                                            [FromQuery] long? id_classification = null,
+                                            [FromQuery] long? id_language = null)
         {
             try
             {
@@ -215,11 +254,17 @@ namespace LMS_API.Controllers
                     var data = context.Query<BookEnt>("AdvancedSearch",
                         new
                         {
-                            title = title,
-                            name_author = name_author,
-                            isbn = isbn,
-                            classification_name = classification_name,
-                            subject_book = subject_book
+                            title,
+                            name_author,
+                            isbn,
+                            classification_name,
+                            subject_book,
+                            publisher,
+                            publication_date_from,
+                            publication_date_until,
+                            availability_book,
+                            id_classification,
+                            id_language
                         },
                         commandType: CommandType.StoredProcedure).ToList();
 
@@ -231,5 +276,7 @@ namespace LMS_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
     }
 }
