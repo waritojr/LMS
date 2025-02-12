@@ -18,6 +18,8 @@
         // Search Variables
         public string Field { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
+        public string ValueExtra { get; set; } = string.Empty;
+
         public DateTime publication_date_from { get; set; }
         public DateTime publication_date_until { get; set; }
 

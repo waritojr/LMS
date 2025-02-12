@@ -145,33 +145,6 @@ namespace LMS_WEB.Controllers
             return View(data);
         }
 
-        //[HttpGet]
-        //public IActionResult AdvancedSearch()
-        //{
-        //    return View(new List<BookEnt>());
-        //}
-
-        //[HttpPost]
-        //public IActionResult AdvancedSearch(List<BookEnt> filters)
-        //{
-        //    ViewBag.HasSearched = true; // Indicar que se ha realizado una búsqueda
-
-        //    // Convertir la lista de filtros en parámetros individuales
-        //    string? title = filters.FirstOrDefault(f => f.Field == "title")?.Value;
-        //    string? name_author = filters.FirstOrDefault(f => f.Field == "name_author")?.Value;
-        //    string? isbn = filters.FirstOrDefault(f => f.Field == "isbn")?.Value;
-        //    string? classification_name = filters.FirstOrDefault(f => f.Field == "classification_name")?.Value;
-        //    string? subject_book = filters.FirstOrDefault(f => f.Field == "subject_book")?.Value;
-
-        //    // Llamar al método del modelo para realizar la búsqueda
-        //    var resp = _bookModel.AdvancedSearch(title, name_author, isbn, classification_name, subject_book);
-
-        //    ViewBag.TotalResults = resp?.Count ?? 0;
-
-        //    // Pasar los resultados a la vista
-        //    return View(resp ?? new List<BookEnt>());
-        //}
-
         [HttpGet]
         public IActionResult AdvancedSearch()
         {
@@ -194,6 +167,9 @@ namespace LMS_WEB.Controllers
         {
             ViewBag.HasSearched = true;
 
+            ViewBag.Classifications = _bookModel.GetClassificationType() ?? new List<SelectListItem>();
+            ViewBag.Languages = _bookModel.GetLanguage() ?? new List<SelectListItem>();
+
             // Convertir la lista de filtros en parámetros individuales
             string? title = filters.FirstOrDefault(f => f.Field == "title")?.Value;
             string? name_author = filters.FirstOrDefault(f => f.Field == "name_author")?.Value;
@@ -205,18 +181,22 @@ namespace LMS_WEB.Controllers
             // Manejar el rango de fechas
             DateTime? publication_date_from = null;
             DateTime? publication_date_until = null;
-            var publicationDateFromFilter = filters.FirstOrDefault(f => f.Field == "publication_date_from");
-            var publicationDateUntilFilter = filters.FirstOrDefault(f => f.Field == "publication_date_until");
+            
+            var date_filter = filters.FirstOrDefault(f => f.Field == "publication_date");
 
-            if (publicationDateFromFilter != null && DateTime.TryParse(publicationDateFromFilter.Value, out var fromDate))
+            if (date_filter != null)
             {
-                publication_date_from = fromDate;
+                if (DateTime.TryParse(date_filter.Value, out var from_date))
+                {
+                    publication_date_from = from_date;
+                }
+
+                if (DateTime.TryParse(date_filter.ValueExtra, out var until_date))
+                {
+                    publication_date_until = until_date;
+                }
             }
 
-            if (publicationDateUntilFilter != null && DateTime.TryParse(publicationDateUntilFilter.Value, out var untilDate))
-            {
-                publication_date_until = untilDate;
-            }
 
             // Manejar disponibilidad (bool)
             bool? availability_book = null;
@@ -255,80 +235,6 @@ namespace LMS_WEB.Controllers
         }
 
 
-        //[HttpGet]
-        //public IActionResult AdvancedSearch()
-        //{
-        //    ViewBag.Classification = _bookModel.GetClassificationType();
-        //    ViewBag.Language = _bookModel.GetLanguage();
-        //    ViewBag.Availability = new List<SelectListItem>
-        //        {
-        //            new SelectListItem { Value = "true", Text = "Disponible" },
-        //            new SelectListItem { Value = "false", Text = "No Disponible" }
-        //        };
-        //    return View(new List<BookEnt>());
-        //}
-
-        //[HttpPost]
-        //public IActionResult AdvancedSearch(List<BookEnt> filters)
-        //{
-        //    ViewBag.HasSearched = true;
-
-        //    // Obtener los valores de los filtros
-        //    string? title = filters.FirstOrDefault(f => f.Field == "title")?.Value;
-        //    string? name_author = filters.FirstOrDefault(f => f.Field == "name_author")?.Value;
-        //    string? isbn = filters.FirstOrDefault(f => f.Field == "isbn")?.Value;
-        //    string? classification_name = filters.FirstOrDefault(f => f.Field == "classification_name")?.Value;
-        //    string? subject_book = filters.FirstOrDefault(f => f.Field == "subject_book")?.Value;
-        //    string? publisher = filters.FirstOrDefault(f => f.Field == "publisher")?.Value;
-
-        //    // Manejar el rango de fechas
-        //    DateTime? publication_date_from = null;
-        //    DateTime? publication_date_until = null;
-        //    var publicationDateFilter = filters.FirstOrDefault(f => f.Field == "publication_date");
-        //    if (publicationDateFilter != null)
-        //    {
-        //        var dateRange = publicationDateFilter.Value.Split('|');
-        //        if (dateRange.Length == 2)
-        //        {
-        //            DateTime.TryParse(dateRange[0], out DateTime tempDateFrom);
-        //            DateTime.TryParse(dateRange[1], out DateTime tempDateUntil);
-        //            publication_date_from = tempDateFrom;
-        //            publication_date_until = tempDateUntil;
-        //        }
-        //    }
-
-        //    // Manejar los SelectListItem
-        //    bool? availability_book = null;
-        //    long? id_classification = null;
-        //    long? id_language = null;
-
-        //    var availabilityFilter = filters.FirstOrDefault(f => f.Field == "availability_book");
-        //    if (availabilityFilter != null && bool.TryParse(availabilityFilter.Value, out bool tempAvailability))
-        //    {
-        //        availability_book = tempAvailability;
-        //    }
-
-        //    var classificationFilter = filters.FirstOrDefault(f => f.Field == "id_classification");
-        //    if (classificationFilter != null && long.TryParse(classificationFilter.Value, out long tempClassification))
-        //    {
-        //        id_classification = tempClassification;
-        //    }
-
-        //    var languageFilter = filters.FirstOrDefault(f => f.Field == "id_language");
-        //    if (languageFilter != null && long.TryParse(languageFilter.Value, out long tempLanguage))
-        //    {
-        //        id_language = tempLanguage;
-        //    }
-
-        //    // Llamar al método del modelo para realizar la búsqueda
-        //    var resp = _bookModel.AdvancedSearch(
-        //        title, name_author, isbn, classification_name, subject_book,
-        //        publisher, publication_date_from, publication_date_until,
-        //        availability_book, id_classification, id_language
-        //    );
-
-        //    ViewBag.TotalResults = resp?.Count ?? 0;
-        //    return View(resp ?? new List<BookEnt>());
-        //}
+        
     }
 }
