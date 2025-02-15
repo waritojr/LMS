@@ -80,7 +80,7 @@ $(document).ready(function () {
                                         <option value="classification_name">Clasificación</option>
                                         <option value="subject_book">Tema</option>
                                         <option value="publisher">Editorial</option>
-                                        <option value="publication_date_from">Fecha de Publicación</option>
+                                        <option value="publication_date">Fecha de Publicación</option>
                                         <option value="availability_book">Disponibilidad</option>
                                         <option value="id_classification">Tipo de Clasificación</option>
                                         <option value="id_language">Idioma</option>
@@ -126,16 +126,18 @@ $(document).ready(function () {
         const selectedField = $(this).val();
         const valueContainer = $(this).closest('.row').find('.value-container');
 
-        if (selectedField === "publication_date_from") {
+        if (selectedField === "publication_date") {
             valueContainer.html(`
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <input type="date" class="form-control" name="filters[${filterIndex - 1}].Value" placeholder="Desde">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="date" class="form-control" name="filters[${filterIndex}].Value" placeholder="Hasta">
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <label class="me-2 mb-0">Desde</label> &nbsp;
+                            <input type="date" class="form-control" name="filters[${filterIndex - 1}].Value" placeholder="Desde">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <label class="me-2 mb-0">Hasta</label> &nbsp;
+                            <input type="date" class="form-control" name="filters[${filterIndex - 1}].ValueExtra" placeholder="Hasta">
+                        </div>
+                     </div>
                         `);
         } else if (selectedField === "availability_book") {
             valueContainer.html(`

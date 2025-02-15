@@ -25,8 +25,11 @@
 
         // FK
         public long id_author { get; set; }
+        public string name_author { get; set; } = string.Empty;
         public long id_language { get; set; }
+        public string language_name { get; set; } = string.Empty;
         public long id_classification { get; set; }
+        public string classification_type { get; set; } = string.Empty;
 
     }
 }

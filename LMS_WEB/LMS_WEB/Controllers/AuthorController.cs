@@ -46,6 +46,7 @@ namespace LMS_WEB.Controllers
         public IActionResult UpdateAuthor(long q)
         {
             var data = _authorModel.GetAllAuthors().Where(m => m.id_author == q).FirstOrDefault();
+
             return View(data);
         }
 
@@ -64,5 +65,7 @@ namespace LMS_WEB.Controllers
             ViewBag.Message = "No se pudo actualizar el autor";
             return View();
         }
+
+
     }
 }

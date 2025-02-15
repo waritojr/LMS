@@ -105,34 +105,6 @@ namespace LMS_WEB.Models
                 return null;
         }
 
-        //public List<BookEnt>? AdvancedSearch(string? title, string? name_author, string? isbn, string? classification_name, string? subject_book)
-        //{
-        //    try
-        //    {
-        //        // Construir la URL con los parámetros de búsqueda
-        //        var queryParams = new List<string>();
-        //        if (!string.IsNullOrEmpty(title)) queryParams.Add($"title={Uri.EscapeDataString(title)}");
-        //        if (!string.IsNullOrEmpty(name_author)) queryParams.Add($"name_author={Uri.EscapeDataString(name_author)}");
-        //        if (!string.IsNullOrEmpty(isbn)) queryParams.Add($"isbn={Uri.EscapeDataString(isbn)}");
-        //        if (!string.IsNullOrEmpty(classification_name)) queryParams.Add($"classification_name={Uri.EscapeDataString(classification_name)}");
-        //        if (!string.IsNullOrEmpty(subject_book)) queryParams.Add($"subject_book={Uri.EscapeDataString(subject_book)}");
-
-        //        string url = $"{_urlAPI}api/Book/AdvancedSearch?{string.Join("&", queryParams)}";
-
-        //        // Realizar la solicitud GET a la API
-        //        var resp = _httpClient.GetAsync(url).Result;
-
-        //        // Verificar si la respuesta es exitosa
-        //        if (resp.IsSuccessStatusCode)
-        //            return resp.Content.ReadFromJsonAsync<List<BookEnt>>().Result;
-        //        else
-        //            return null;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return null;
-        //    }
-        //}
 
         public List<BookEnt>? AdvancedSearch(string? title, string? name_author, string? isbn, string? classification_name, string? subject_book,
                                 string? publisher, DateTime? publication_date_from, DateTime? publication_date_until,

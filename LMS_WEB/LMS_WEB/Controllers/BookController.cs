@@ -52,9 +52,6 @@ namespace LMS_WEB.Controllers
             }
 
             var id_book = _bookModel.AddBook(entity);
-            ViewBag.Classification = _bookModel.GetClassificationType();
-            ViewBag.Language = _bookModel.GetLanguage();
-            ViewBag.Author = _authorModel.ListAuthors();
 
             if (id_book > 0)
             {
@@ -68,6 +65,9 @@ namespace LMS_WEB.Controllers
             }
 
             ViewBag.Message = "No se pudo registrar el libro";
+            ViewBag.Classification = _bookModel.GetClassificationType();
+            ViewBag.Language = _bookModel.GetLanguage();
+            ViewBag.Author = _authorModel.ListAuthors();
             return View();
         }
 
@@ -105,9 +105,6 @@ namespace LMS_WEB.Controllers
 
             var resp = _bookModel.UpdateBook(entity);
 
-            ViewBag.Classification = _bookModel.GetClassificationType();
-            ViewBag.Language = _bookModel.GetLanguage();
-            ViewBag.Author = _authorModel.ListAuthors();
 
             if (resp == 1)
             {
@@ -123,7 +120,10 @@ namespace LMS_WEB.Controllers
             }
             else
             {
-                ViewBag.MensajePantalla = "No se pudo actualizar el libro";
+                ViewBag.Message = "No se pudo actualizar el libro";
+                ViewBag.Classification = _bookModel.GetClassificationType();
+                ViewBag.Language = _bookModel.GetLanguage();
+                ViewBag.Author = _authorModel.ListAuthors();
                 return View();
             }
         }

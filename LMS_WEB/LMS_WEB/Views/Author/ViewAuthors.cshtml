@@ -1,10 +1,12 @@
 ﻿@model List<LMS_WEB.Entities.AuthorEnt>
+@using LMS_WEB.Helpers
 
 @{
     ViewData["Title"] = "ViewAuthors";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
 
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
@@ -12,7 +14,7 @@
             <h4 class="card-title">Información de Libros</h4>
 
             <div style="text-align:right">
-                <a class="btn btn-primary" href="@Url.Action("UpdateAuthor","Author")">Agregar Autor</a>
+                <a class="btn btn-primary" href="@Url.Action("AddAuthor","Author")">Agregar Autor</a>
             </div>
             <br>
 
@@ -23,6 +25,7 @@
                         <th>Nacionalidad</th>
                         <th>Fecha Nacimiento</th>
                         <th>Biografía</th>
+                        <th>Actualizar</th>
 
                     </tr>
                 </thead>
@@ -34,24 +37,20 @@
                         <tr>
                             <td>@item.name_author</td>
                             <td>@item.nationality</td>
-                            <td>@item.date_of_birth</td>
-                            <td>@item.biography</td>
-
-
-                            @*<td style="text-align:center"><a href="@Url.Action("ActualizarEstadoProducto","Book")"><i class="fa fa-exchange fa-lg"></i></a></td>*@
-                            @*<td style="text-align:center"><a href="@Url.Action("UpdateBook","Book")"><i class="fa fa-tag fa-lg"></i></a></td>*@
-
-
                             <td>
-                                <div>
-                                    <a href="@Url.Action("UpdateAuthor", "Author", new { q = item.id_author })" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Actualizar">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
-                                        </svg>
-                                    </a>
-                                </div>
+                                @{
+                                    // Formatear la fecha en un formato legible
+                                    @item.date_of_birth.ToString("d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-CR"))
+                                }
                             </td>
-
+                            <td class="biography-column" data-biography="@item.biography" title="Ver más">
+                                @{
+                                    // Mostrar un resumen de la biografía
+                                    var summary = item.biography.Length > 100 ? item.biography.Substring(0, 100) + "..." : item.biography;
+                                    @summary
+                                }
+                            </td>
+                            <td>@UpdateBtn.RenderUpdateButtonAuthor(item)</td>
 
                         </tr>
                     }
@@ -62,13 +61,46 @@
     </div>
 </div>
 
+<script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="~/js/ScriptFunctions.js"></script>
+
 <script>
     $(document).ready(function () {
-        $('#showData').dataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
-            }
+        // Mostrar tooltip al pasar el mouse sobre la biografía
+        $('.biography-column').hover(function () {
+            $(this).attr('title', $(this).data('biography'));
+        });
+
+        // Abrir modal al hacer clic en la biografía
+        $('.biography-column').click(function () {
+            var biography = $(this).data('biography');
+            $('#modalBiographyContent').text(biography);
+            $('#biographyModal').modal('show');
         });
     });
 </script>
+
+
+<style>
+    /* Limitar el ancho de la columna de biografía */
+    .biography-column {
+        max-width: 300px; /* Ajusta este valor según tus necesidades */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+    }
+
+    /* Estilo para el tooltip */
+    .biography-tooltip {
+        position: absolute;
+        background-color: #333;
+        color: #fff;
+        padding: 5px;
+        border-radius: 3px;
+        font-size: 14px;
+        z-index: 1000;
+        display: none;
+    }
+</style>
