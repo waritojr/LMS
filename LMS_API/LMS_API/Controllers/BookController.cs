@@ -199,6 +199,28 @@ namespace LMS_API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [Route("SimpleSearch")]
+        public IActionResult SimpleSearch([FromQuery] string search_term)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_connection))
+                {
+                    var data = context.Query<BookEnt>("SimpleSearch",
+                        new { search_term },
+                        commandType: CommandType.StoredProcedure).ToList();
+
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         [Route("AdvancedSearch")]
         public IActionResult AdvancedSearch([FromQuery] string? title = null,
                                             [FromQuery] string? name_author = null,

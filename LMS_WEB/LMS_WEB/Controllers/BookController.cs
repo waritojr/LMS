@@ -145,6 +145,26 @@ namespace LMS_WEB.Controllers
             return View(data);
         }
 
+        [HttpPost]
+        public IActionResult BookCatalog(string search_term)
+        {
+
+            List<BookEnt>? data;
+
+            if (string.IsNullOrEmpty(search_term))
+            {
+                // Si no hay término de búsqueda, mostrar todos los libros
+                data = _bookModel.GetAllBooks();
+            }
+            else
+            {
+                // Realizar la búsqueda simple
+                data = _bookModel.SimpleSearch(search_term);
+            }
+
+            return View(data);
+        }
+
         [HttpGet]
         public IActionResult AdvancedSearch()
         {

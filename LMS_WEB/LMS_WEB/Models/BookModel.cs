@@ -105,6 +105,24 @@ namespace LMS_WEB.Models
                 return null;
         }
 
+        public List<BookEnt>? SimpleSearch(string search_term)
+        {
+            try
+            {
+                string url = $"{_urlAPI}api/Book/SimpleSearch?search_term={Uri.EscapeDataString(search_term)}";
+                var resp = _httpClient.GetAsync(url).Result;
+
+                if (resp.IsSuccessStatusCode)
+                    return resp.Content.ReadFromJsonAsync<List<BookEnt>>().Result;
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
 
         public List<BookEnt>? AdvancedSearch(string? title, string? name_author, string? isbn, string? classification_name, string? subject_book,
                                 string? publisher, DateTime? publication_date_from, DateTime? publication_date_until,
