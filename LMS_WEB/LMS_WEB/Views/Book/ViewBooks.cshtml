@@ -58,7 +58,7 @@
                                     }
                                 </td>
                                 <td>@item.quantity</td>
-                                <td>@item.availability_book</td>
+                                <td>@(item.availability_book ? "Disponible" : "No Disponble")</td>
                                 <td>@(item.status_book ? "Activo" : "Inactivo")</td>
                                 <td style="text-align:center"><img src=@item.img_book style="width:150px; height:150px; border-radius:0px"></td>
                                 <td>@UpdateBtn.RenderActionButtonsBook(item)</td>

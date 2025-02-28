@@ -17,6 +17,22 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\images\\4.png",
+      "PackagePath": "staticwebassets\\images\\4.png"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\images\\5.png",
+      "PackagePath": "staticwebassets\\images\\5.png"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\images\\6.png",
+      "PackagePath": "staticwebassets\\images\\6.png"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\images\\7.png",
+      "PackagePath": "staticwebassets\\images\\7.png"
+    },
+    {
       "Id": "C:\\Users\\Usuario\\Documents\\GitHub\\LMS\\LMS_WEB\\LMS_WEB\\wwwroot\\js\\ScriptFunctions.js",
       "PackagePath": "staticwebassets\\js\\ScriptFunctions.js"
     },

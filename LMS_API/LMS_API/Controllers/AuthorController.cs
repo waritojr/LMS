@@ -81,7 +81,7 @@ namespace LMS_API.Controllers
                 using (var context = new SqlConnection(_connection))
                 {
                     var data = context.Execute("UpdateAuthor",
-                        new { entity.name_author, entity.nationality, entity.date_of_birth, entity.biography },
+                        new { entity.id_author, entity.name_author, entity.nationality, entity.date_of_birth, entity.biography },
                         commandType: CommandType.StoredProcedure);
 
                     return Ok(data);

@@ -5,85 +5,165 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
 <!-- Sección del Título de la Biblioteca y Barra de Búsqueda -->
-<div class="row m-b-20">
-    <div class="col-md-12 text-center">
-        <h1 class="display-4">Biblioteca Isaac Felipe Azofeifa</h1>
-        <p class="lead">Explora nuestra colección de libros y encuentra lo que necesitas.</p>
-    </div>
-    <div class="col-md-12 mb-4">
-        <!-- Añadido mb-4 para espacio inferior -->
-        @using (Html.BeginForm("BookCatalog", "Book", FormMethod.Post, new { @class = "d-flex justify-content-center", @id = "search_form" }))
-        {
-            <div class="input-group" style="max-width: 800px;">
-                @Html.TextBox("search_term", null, new
+<div class="container-fluid">
+    <!-- Sección del Título de la Biblioteca y Barra de Búsqueda -->
+    <div class="row m-b-20">
+        <div class="col-md-12">
+            <h1 class="display-4">Biblioteca Isaac Felipe Azofeifa</h1>
+            <p class="lead">Explora nuestra colección de libros y encuentra lo que necesitas.</p>
+        </div>
+        <div class="col-md-12 mb-4">
+            @using (Html.BeginForm("BookCatalog", "Book", FormMethod.Post, new { @class = "w-100", @id = "search_form" }))
             {
-            @class = "form-control form-control-lg",
-            placeholder = "Buscar libros por título, autor, ISBN...",
-            style = "border-right: 0;"
-            })
-                <div class="input-group-append">
-                    <button class="btn btn-primary btn-lg"
-                            type="submit"
-                            title="Realizar búsqueda"
-                            style="height: 100%; padding: 0.75rem 1.5rem;">
-                        <i class="fa fa-search"></i>
-                    </button>
+                <div class="input-group">
+                    @Html.TextBox("search_term", ViewBag.SearchTerm as string, new
+                {
+                @class = "form-control form-control-lg",
+                placeholder = "Buscar libros por título, autor, ISBN...",
+                style = "border-right: 0;"
+                })
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-lg"
+                                type="submit"
+                                title="Realizar búsqueda"
+                                style="height: 100%; padding: 0.75rem 1.5rem;">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
 
-<!-- Sección de Listado de Libros -->
-<div class="row">
-    @if (Model != null && Model.Count > 0)
-    {
-        foreach (var item in Model)
+    <div class="row">
+        <div class="col-md-12">
+            <hr style="border-top: 1px dashed #e9ecef; margin-top: 0; margin-bottom: 1.5rem;">
+        </div>
+    </div>
+
+    <div class="row no-remove mb-2">
+        <div class="col-md-12">
+            <p class="text-muted float-left mb-0" style="font-size: 0.9rem; font-weight: 300;">
+                Tiempo: <span style="font-weight: 400;">@ViewBag.SearchTime</span> s
+            </p>
+            <p class="text-muted text-right mb-0" style="font-size: 0.9rem; font-weight: 300;">
+                Total de resultados: <span style="font-weight: 400;">@ViewBag.TotalResults</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Sección de Listado de Libros -->
+    <div class="row">
+        @if (Model != null && Model.Count > 0)
         {
-            <div class="col-md-12 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <div class="row">
-                            <!-- Imagen del Libro -->
-                            <div class="col-md-3 text-center">
-                                <img src="@item.img_book" class="img-fluid" alt="@item.title" style="max-height: 200px; object-fit: contain;">
-                            </div>
-                            <!-- Detalles del Libro -->
-                            <div class="col-md-7">
-                                <h4 class="card-title">@item.title</h4>
-                                <ul class="list-unstyled">
-                                    <li><strong>Autor:</strong> @item.id_author</li>
-                                    <li><strong>ISBN:</strong> @item.isbn</li>
-                                    <li><strong>Editorial:</strong> @item.publisher</li>
-                                    <li><strong>Año de Edición:</strong> @item.publication_date</li>
-                                </ul>
-                            </div>
-                            <!-- Acciones -->
-                            <div class="col-md-2 text-right">
-                                <div class="btn-group-vertical">
-                                    <a href="@Url.Action("ViewBook", "Book", new { id = item.id_book })" class="btn btn-outline-primary btn-sm mb-2">
-                                        <i class="fa fa-eye"></i> Ver Detalles
-                                    </a>
-                                    <button class="btn btn-outline-success btn-sm" title="Agregar a mi estantería">
-                                        <i class="fa fa-bookmark"></i> Guardar
-                                    </button>
+            foreach (var item in Model)
+            {
+                <div class="col-md-12 mb-4">
+                    <div class="card h-100" style="border: 1px solid #dee2e6; background-color: #f8f9fa; border-radius: 2px;">
+                        <div class="card-body position-relative">
+                            <!-- Botón de Detalles en la esquina superior derecha -->
+                            <a href="@Url.Action("ViewBook", "Book", new { id = item.id_book })" class="btn btn-outline-primary btn-sm position-absolute" style="top: 10px; right: 10px;">
+                                <i class="fa fa-eye"></i> Ver Detalles
+                            </a>
+
+                            <div class="row align-items-center h-100">
+                                <!-- Imagen del Libro -->
+                                <div class="col-md-3 text-center">
+                                    <img src="@item.img_book" class="img-fluid" alt="@item.title" style="max-height: 200px; object-fit: contain;">
+                                </div>
+
+                                <!-- Detalles del Libro -->
+                                <div class="col-md-9">
+                                    <h4 class="card-title mb-3">@item.title</h4>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <strong>Autor:</strong> @item.name_author
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>ISBN:</strong> @item.isbn
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Editorial:</strong> @item.publisher
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Año de Edición:</strong>
+                                            @{
+                                                @item.publication_date.ToString("d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-CR"))
+                                            }
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            }
+        }
+        else
+        {
+            <div class="col-md-12 text-center">
+                <div class="alert alert-info" role="alert">
+                    No hay libros disponibles en este momento.
+                </div>
             </div>
         }
-    }
-    else
-    {
-        <div class="col-md-12 text-center">
-            <div class="alert alert-info" role="alert">
-                No hay libros disponibles en este momento.
-            </div>
+    </div>
+    <!-- Sección de Paginación -->
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <nav aria-label="Paginación">
+                <ul class="pagination justify-content-center" style="gap: 0.25rem;">
+                    <!-- Espacio reducido entre botones -->
+                    <!-- Botón "Primera Página" -->
+                    <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="btn btn-primary text-white js-input btn-responsive @(ViewBag.CurrentPage == 1 ? "disabled-button" : "")"
+                           style="border-radius: 4px; padding: 0.75rem 1.25rem;"
+                           href="@(ViewBag.CurrentPage == 1 ? "javascript:void(0);" : Url.Action("BookCatalog", new { page = 1, search_term = ViewBag.SearchTerm }))">⇤</a>
+                    </li>
+
+                    <!-- Botón "Página Anterior" -->
+                    <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="btn btn-primary text-white js-input btn-responsive @(ViewBag.CurrentPage == 1 ? "disabled-button" : "")"
+                           style="border-radius: 4px; padding: 0.75rem 1.25rem;"
+                           href="@(ViewBag.CurrentPage == 1 ? "javascript:void(0);" : Url.Action("BookCatalog", new { page = ViewBag.CurrentPage - 1, search_term = ViewBag.SearchTerm }))">«</a>
+                    </li>
+
+                    <!-- Números de Página -->
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="btn btn-primary text-white js-input btn-responsive"
+                               style="border-radius: 4px; padding: 0.75rem 1.25rem;"
+                               href="@Url.Action("BookCatalog", new { page = i, search_term = ViewBag.SearchTerm })">@i</a>
+                        </li>
+                    }
+
+                    <!-- Botón "Página Siguiente" -->
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="btn btn-primary text-white js-input btn-responsive @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled-button" : "")"
+                           style="border-radius: 4px; padding: 0.75rem 1.25rem;"
+                           href="@(ViewBag.CurrentPage == ViewBag.TotalPages ? "javascript:void(0);" : Url.Action("BookCatalog", new { page = ViewBag.CurrentPage + 1, search_term = ViewBag.SearchTerm }))">»</a>
+                    </li>
+
+                    <!-- Botón "Última Página" -->
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="btn btn-primary text-white js-input btn-responsive @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled-button" : "")"
+                           style="border-radius: 4px; padding: 0.75rem 1.25rem;"
+                           href="@(ViewBag.CurrentPage == ViewBag.TotalPages ? "javascript:void(0);" : Url.Action("BookCatalog", new { page = ViewBag.TotalPages, search_term = ViewBag.SearchTerm }))">⇥</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    }
+    </div>
 </div>
 
+    <style>
+        .disabled-button {
+            background-color: rgba(63, 62, 145, 0.5); /* Fondo más claro con opacidad */
+            border-color: rgba(63, 62, 145, 0.5); /* Borde más claro con opacidad */
+            color: #ffffff; /* Texto blanco */
+            cursor: not-allowed; /* Cursor de no permitido */
+            pointer-events: none; /* Deshabilitar clics */
+        }
+    </style>

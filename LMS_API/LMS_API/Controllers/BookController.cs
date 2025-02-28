@@ -101,6 +101,7 @@ namespace LMS_API.Controllers
                     var data = context.Execute("UpdateBook",
                         new
                         {
+                            entity.id_book,
                             entity.classification_name,
                             entity.title,
                             entity.subject_book,

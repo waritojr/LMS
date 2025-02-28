@@ -3,7 +3,9 @@ using LMS_WEB.Interfaces;
 using LMS_WEB.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 
 namespace LMS_WEB.Controllers
 {
@@ -33,6 +35,14 @@ namespace LMS_WEB.Controllers
         [HttpGet]
         public IActionResult AddBook()
         {
+
+            var availabilityOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Disponible", Value = "true" },
+                    new SelectListItem { Text = "No Disponible", Value = "false" }
+                };
+
+            ViewBag.AvailabilityOptions = availabilityOptions;
             ViewBag.Classification = _bookModel.GetClassificationType();
             ViewBag.Language = _bookModel.GetLanguage();
             ViewBag.Author = _authorModel.ListAuthors();
@@ -40,8 +50,21 @@ namespace LMS_WEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBook(IFormFile img_book, BookEnt entity)
+        public IActionResult AddBook(IFormFile img_book, BookEnt entity, IFormCollection form)
         {
+            // Convertir de string a DateTime (formato dd/MM/yyyy)
+            if (DateTime.TryParseExact(form["publication_date"], "dd/MM/yyyy",
+                                       System.Globalization.CultureInfo.InvariantCulture,
+                                       System.Globalization.DateTimeStyles.None,
+                                       out DateTime parsedDate))
+            {
+                entity.publication_date = parsedDate;
+            }
+            else
+            {
+                entity.publication_date = DateTime.MinValue; // Manejo de error si la fecha es inválida
+            }
+
             string ext = Path.GetExtension(Path.GetFileName(img_book.FileName));
             string folder = Path.Combine(_hostingEnvironment.ContentRootPath, "wwwroot\\images");
 
@@ -61,7 +84,7 @@ namespace LMS_WEB.Controllers
                     img_book.CopyTo(fileStream);
                 }
 
-                return RedirectToAction("ViewAuthors", "Author");
+                return RedirectToAction("ViewBooks", "Books");
             }
 
             ViewBag.Message = "No se pudo registrar el libro";
@@ -76,6 +99,19 @@ namespace LMS_WEB.Controllers
         public IActionResult UpdateBook(long q)
         {
             var data = _bookModel.GetAllBooks().Where(m => m.id_book == q).FirstOrDefault();
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            var availabilityOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Disponible", Value = "true" },
+                    new SelectListItem { Text = "No Disponible", Value = "false" }
+                };
+
+            ViewBag.AvailabilityOptions = availabilityOptions;
             ViewBag.Classification = _bookModel.GetClassificationType();
             ViewBag.Language = _bookModel.GetLanguage();
             ViewBag.Author = _authorModel.ListAuthors();
@@ -83,8 +119,39 @@ namespace LMS_WEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateBook(IFormFile img_book, BookEnt entity)
+        public IActionResult UpdateBook(IFormCollection form, IFormFile img_book)
         {
+            var entity = new BookEnt
+            {
+                id_book = Convert.ToInt64(form["id_book"]),
+                title = form["title"],
+                classification_name = form["classification_name"],
+                id_classification = Convert.ToInt32(form["id_classification"]),
+                subject_book = form["subject_book"],
+                id_language = Convert.ToInt32(form["id_language"]),
+                description_book = form["description_book"],
+                isbn = form["isbn"],
+                id_author = Convert.ToInt64(form["id_author"]),
+                publisher = form["publisher"],
+                quantity = Convert.ToInt32(form["quantity"]),
+                availability_book = Convert.ToBoolean(form["availability_book"])
+                //availability_book = form["availability_book"].ToString() == "on"
+
+            };
+
+            // Conversión de la fecha de publicación de "dd/MM/yyyy" a DateTime
+            if (DateTime.TryParseExact(form["publication_date"], "dd/MM/yyyy",
+                                       System.Globalization.CultureInfo.InvariantCulture,
+                                       System.Globalization.DateTimeStyles.None,
+                                       out DateTime parsedDate))
+            {
+                entity.publication_date = parsedDate;
+            }
+            else
+            {
+                entity.publication_date = DateTime.MinValue; // Manejo de error si la fecha es inválida
+            }
+
             string ext = string.Empty;
             string folder = string.Empty;
             string file = string.Empty;
@@ -100,11 +167,9 @@ namespace LMS_WEB.Controllers
                     ViewBag.MensajePantalla = "La imagen debe ser .png";
                     return View();
                 }
-
             }
 
             var resp = _bookModel.UpdateBook(entity);
-
 
             if (resp == 1)
             {
@@ -124,6 +189,12 @@ namespace LMS_WEB.Controllers
                 ViewBag.Classification = _bookModel.GetClassificationType();
                 ViewBag.Language = _bookModel.GetLanguage();
                 ViewBag.Author = _authorModel.ListAuthors();
+                ViewBag.AvailabilityOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Disponible", Value = "true" },
+                    new SelectListItem { Text = "No Disponible", Value = "false" }
+                };
+
                 return View();
             }
         }
@@ -139,15 +210,30 @@ namespace LMS_WEB.Controllers
         }
 
         [HttpGet]
-        public IActionResult BookCatalog()
+        public IActionResult BookCatalog(int page = 1)
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
             var data = _bookModel.GetAllBooks();
-            return View(data);
+            stopwatch.Stop();
+
+            int page_size = 2;
+            int total_items = data.Count;
+            int total_pages = (int)Math.Ceiling((double)total_items / page_size);
+
+            var paginated_data = data.Skip((page - 1) * page_size).Take(page_size).ToList();
+
+            ViewBag.TotalResults = total_items;
+            ViewBag.SearchTime = stopwatch.Elapsed.TotalSeconds.ToString("0.0000", CultureInfo.InvariantCulture);
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = total_pages;
+            return View(paginated_data);
         }
 
         [HttpPost]
-        public IActionResult BookCatalog(string search_term)
+        public IActionResult BookCatalog(string search_term, int page = 1)
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
             List<BookEnt>? data;
 
@@ -161,8 +247,20 @@ namespace LMS_WEB.Controllers
                 // Realizar la búsqueda simple
                 data = _bookModel.SimpleSearch(search_term);
             }
+            stopwatch.Stop();
 
-            return View(data);
+            int page_size = 2;
+            int total_items = data.Count;
+            int total_pages = (int)Math.Ceiling((double)total_items / page_size);
+
+            var paginated_data = data.Skip((page - 1) * page_size).Take(page_size).ToList();
+
+            ViewBag.TotalResults = total_items;
+            ViewBag.SearchTime = stopwatch.Elapsed.TotalSeconds.ToString("0.0000", CultureInfo.InvariantCulture);
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = total_pages;
+            ViewBag.SearchTerm = search_term;
+            return View(paginated_data);
         }
 
         [HttpGet]

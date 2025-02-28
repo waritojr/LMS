@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
@@ -12,8 +14,7 @@
 
             @using (Html.BeginForm("AddBook", "Book", FormMethod.Post, new { @class = "pt-3", @enctype = "multipart/form-data" }))
             {
-                @*@ViewBag.MensajePantalla*@
-
+                @ViewBag.Message
 
                 <div class="form-group">
                     <label>Título</label>
@@ -53,7 +54,9 @@
                 </div>
                 <div class="form-group">
                     <label>Fecha de Publicación</label>
-                    @Html.TextBoxFor(m => m.publication_date, new { @class="form-control form-control-lg", @type="date", @placeholder="Publicación" })
+                    @Html.TextBox("publication_date",
+                        Model?.publication_date.ToString("dd/MM/yyyy"),
+                        new { @class = "form-control form-control-lg", @type = "text", id = "datepicker", @placeholder="dd/mm/yyyy" })
                 </div>
                 <div class="form-group">
                     <label>Unidades</label>
@@ -61,7 +64,7 @@
                 </div>
                 <div class="form-group">
                     <label>Disponibilidad</label>
-                    @Html.TextBoxFor(m => m.availability_book, new { @class="form-control form-control-lg", @type="text", @placeholder="Disponibilidad" })
+                    @Html.DropDownListFor(m => m.availability_book, ViewBag.AvailabilityOptions as List<SelectListItem>, new { @class = "form-control form-control-lg" })
                 </div>
 
                 <div class="form-group">
@@ -82,4 +85,14 @@
     </div>
 </div>
 
-<script src="~/js/scriptfunctions.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    flatpickr("#datepicker", {
+        dateFormat: "d/m/Y",  // Formato dd/mm/yyyy
+        allowInput: true,     // Permite escribir la fecha manualmente
+        altInput: true,       // Muestra un input alternativo cuando se escribe
+        altFormat: "d/m/Y"    // Formato de salida para el input alternativo
+    });
+</script>
