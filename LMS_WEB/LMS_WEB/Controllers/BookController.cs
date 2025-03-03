@@ -22,7 +22,14 @@ namespace LMS_WEB.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
- 
+        [HttpGet]
+        public IActionResult ViewBook(long q)
+        {
+            var data = _bookModel.GetAllBooks()?.Where(m => m.id_book == q).FirstOrDefault();
+
+            return View(data);
+        }
+
         // View to consult books
         [HttpGet]
         public IActionResult ViewBooks()
@@ -218,10 +225,10 @@ namespace LMS_WEB.Controllers
             stopwatch.Stop();
 
             int page_size = 2;
-            int total_items = data.Count;
+            int total_items = data?.Count ?? 0;
             int total_pages = (int)Math.Ceiling((double)total_items / page_size);
 
-            var paginated_data = data.Skip((page - 1) * page_size).Take(page_size).ToList();
+            var paginated_data = data?.Skip((page - 1) * page_size).Take(page_size).ToList();
 
             ViewBag.TotalResults = total_items;
             ViewBag.SearchTime = stopwatch.Elapsed.TotalSeconds.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -250,10 +257,10 @@ namespace LMS_WEB.Controllers
             stopwatch.Stop();
 
             int page_size = 2;
-            int total_items = data.Count;
+            int total_items = data?.Count ?? 0;
             int total_pages = (int)Math.Ceiling((double)total_items / page_size);
 
-            var paginated_data = data.Skip((page - 1) * page_size).Take(page_size).ToList();
+            var paginated_data = data?.Skip((page - 1) * page_size).Take(page_size).ToList();
 
             ViewBag.TotalResults = total_items;
             ViewBag.SearchTime = stopwatch.Elapsed.TotalSeconds.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -264,7 +271,18 @@ namespace LMS_WEB.Controllers
         }
 
         [HttpGet]
-        public IActionResult AdvancedSearch()
+        public IActionResult AdvancedSearch(string title = null,
+                                            string name_author = null,
+                                            string isbn = null,
+                                            string classification_name = null,
+                                            string subject_book = null,
+                                            string publisher = null,
+                                            DateTime? publication_date_from = null,
+                                            DateTime? publication_date_until = null,
+                                            bool? availability_book = null,
+                                            long? id_classification = null,
+                                            long? id_language = null,
+                                            int page = 1)
         {
             // Cargar los SelectListItem para clasificaciones e idiomas
             ViewBag.Classifications = _bookModel.GetClassificationType() ?? new List<SelectListItem>();
@@ -277,12 +295,40 @@ namespace LMS_WEB.Controllers
                     new SelectListItem { Value = "false", Text = "No Disponible" }
                 };
 
-            return View(new List<BookEnt>());
+            ViewBag.TitleFilter = title;
+            ViewBag.AuthorFilter = name_author;
+            ViewBag.IsbnFilter = isbn;
+            ViewBag.ClassificationFilter = classification_name;
+            ViewBag.SubjectFilter = subject_book;
+            ViewBag.PublisherFilter = publisher;
+            ViewBag.PublicationDateFromFilter = publication_date_from;
+            ViewBag.PublicationDateUntilFilter = publication_date_until;
+            ViewBag.AvailabilityFilter = availability_book;
+            ViewBag.ClassificationIdFilter = id_classification;
+            ViewBag.LanguageIdFilter = id_language;
+
+            var resp = _bookModel.AdvancedSearch(title, name_author, isbn, classification_name, subject_book,
+                                                publisher, publication_date_from, publication_date_until,
+                                                availability_book, id_classification, id_language);
+
+            int page_size = 2;
+            int total_items = resp?.Count ?? 0;
+            int total_pages = (int)Math.Ceiling((double)total_items / page_size);
+
+            var paginated_data = resp?.Skip((page - 1) * page_size).Take(page_size).ToList();
+
+            ViewBag.TotalResults = total_items;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = total_pages;
+
+            return View(paginated_data ?? new List<BookEnt>());
         }
 
         [HttpPost]
-        public IActionResult AdvancedSearch(List<BookEnt> filters)
+        public IActionResult AdvancedSearch(List<BookEnt> filters, int page = 1)
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
             ViewBag.HasSearched = true;
 
             ViewBag.Classifications = _bookModel.GetClassificationType() ?? new List<SelectListItem>();
@@ -340,19 +386,42 @@ namespace LMS_WEB.Controllers
                 id_language = languageId;
             }
 
+            ViewBag.TitleFilter = title;
+            ViewBag.AuthorFilter = name_author;
+            ViewBag.IsbnFilter = isbn;
+            ViewBag.ClassificationFilter = classification_name;
+            ViewBag.SubjectFilter = subject_book;
+            ViewBag.PublisherFilter = publisher;
+            ViewBag.PublicationDateFromFilter = publication_date_from;
+            ViewBag.PublicationDateUntilFilter = publication_date_until;
+            ViewBag.AvailabilityFilter = availability_book;
+            ViewBag.ClassificationIdFilter = id_classification;
+            ViewBag.LanguageIdFilter = id_language;
+
             // Llamar al método del modelo para realizar la búsqueda
             var resp = _bookModel.AdvancedSearch(
                 title, name_author, isbn, classification_name, subject_book,
                 publisher, publication_date_from, publication_date_until,
                 availability_book, id_classification, id_language);
 
-            ViewBag.TotalResults = resp?.Count ?? 0;
+            stopwatch.Stop();
 
-            // Pasar los resultados a la vista
-            return View(resp ?? new List<BookEnt>());
+            int page_size = 2;
+            int total_items = resp?.Count ?? 0;
+            int total_pages = (int)Math.Ceiling((double)total_items / page_size);
+
+            var paginated_data = resp?.Skip((page - 1) * page_size).Take(page_size).ToList();
+
+            ViewBag.TotalResults = total_items;
+            ViewBag.SearchTime = stopwatch.Elapsed.TotalSeconds.ToString("0.0000", CultureInfo.InvariantCulture);
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = total_pages;
+            return View(paginated_data ?? new List<BookEnt>());
+
+            //return View(resp ?? new List<BookEnt>());
         }
 
 
-        
+
     }
 }

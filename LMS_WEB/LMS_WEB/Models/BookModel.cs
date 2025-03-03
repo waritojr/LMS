@@ -22,6 +22,7 @@ namespace LMS_WEB.Models
             _token = _HttpContextAccessor.HttpContext.Session.GetString("user_token");
         }
 
+
         public List<BookEnt>? GetAllBooks()
         {
             string url = _urlAPI + "api/Book/GetAllBooks";

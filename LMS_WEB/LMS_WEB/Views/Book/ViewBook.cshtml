@@ -5,100 +5,92 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="col-md-9 bg-white flex-last flex-md-first">
-    <div class="row border-bottom p-b-15">
-        <div class="col-md-10">
-            <h2 class="no-margin p-t-15">
-                @Model.title
-            </h2>
-        </div>
-        <div class="col-md-2 p-t-30">
-            @if (Model.availability_book)
-            {
-                <span class="badge bg-success text-white">
-                    <i class="fa fa-check"></i> Disponible
-                </span>
-            }
-            else
-            {
-                <span class="badge bg-danger text-white">
-                    <i class="fa fa-times"></i> No Disponible
-                </span>
-            }
-        </div>
-    </div>
+<div class="container-fluid">
+    <div class="col-md-12 mb-4">
+        <div class="card h-100" style="border: 1px solid #dee2e6; background-color: #f8f9fa; border-radius: 4px;">
+            <div class="card-body position-relative">
+                <!-- Botón para devolverse a la vista previa -->
+                <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm position-absolute" style="top: 10px; left: 10px; border-radius: 2px;">
+                    <i class="fa fa-arrow-left"></i> Volver
+                </a>
 
-    
-
-    <div class="row p-t-10">
-        <div class="col-md-12">
-            </br>
-
-            <div class="row m-t-20">
-                <div class="col-md-6">
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Autor:</label>
-                        <div class="col-md-8">
-                            @Model.id_author
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">ISBN:</label>
-                        <div class="col-md-8">
-                            @Model.isbn
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Editorial:</label>
-                        <div class="col-md-8">
-                            @Model.publisher
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Año de Publicación:</label>
-                        <div class="col-md-8">
-                            @Model.publication_date
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Materia:</label>
-                        <div class="col-md-8">
-                            @Model.subject_book
-                            @*@string.Join(", ", Model.subject_book)*@
-                        </div>
-                    </div>
+                <!-- Estado de Disponibilidad -->
+                <div class="position-absolute" style="top: 10px; right: 10px;">
+                    @if (Model.availability_book)
+                    {
+                        <span class="badge bg-success text-white" style="border-radius: 2px;">
+                            <i class="fa fa-check"></i> Disponible
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger text-white" style="border-radius: 2px;">
+                            <i class="fa fa-times"></i> No Disponible
+                        </span>
+                    }
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Unidades:</label>
-                        <div class="col-md-8">
-                            @Model.quantity
-                        </div>
+                <div class="row align-items-center h-100">
+                    <!-- Imagen del Libro -->
+                    <div class="col-md-3 text-center">
+                        <img src="@Model.img_book" class="img-fluid" alt="@Model.title" style="max-height: 300px; object-fit: contain; border-radius: 4px;">
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Idioma:</label>
-                        <div class="col-md-8">
-                            @Model.id_language
-                        </div>
-                    </div>
+                    <!-- Detalles del Libro -->
+                    <div class="col-md-9">
+                        <h4 class="card-title mb-3" style="font-weight: 600;">@Model.title</h4>
 
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Clasificación:</label>
-                        <div class="col-md-8">
-                            @Model.classification_name
-                        </div>
-                    </div>
+                        <div class="row">
+                            <!-- Columna Izquierda -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <strong>Autor:</strong>
+                                    <p class="mb-0">@Model.name_author</p>
+                                </div>
 
-                    <div class="form-group row">
-                        <label class="col-md-4 font-weight-bold">Tipo de Clasificación:</label>
-                        <div class="col-md-8">
-                            @Model.id_classification
+                                <div class="mb-3">
+                                    <strong>ISBN:</strong>
+                                    <p class="mb-0">@Model.isbn</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Editorial:</strong>
+                                    <p class="mb-0">@Model.publisher</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Año de Edición:</strong>
+                                    <p class="mb-0">@Model.publication_date.ToString("d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-CR"))</p>
+                                </div>
+                            </div>
+
+                            <!-- Columna Derecha -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <strong>Materia:</strong>
+                                    <p class="mb-0">@Model.subject_book</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Unidades:</strong>
+                                    <p class="mb-0">@Model.quantity</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Idioma:</strong>
+                                    <p class="mb-0">@Model.language_name</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Clasificación:</strong>
+                                    <p class="mb-0">@Model.classification_name</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Tipo de Clasificación:</strong>
+                                    <p class="mb-0">@Model.classification_type</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
